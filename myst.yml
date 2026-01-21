@@ -1,0 +1,15 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 6bb2d763-2074-4b2f-ae50-c529d4ff95b4
+  title: Confidential Computing Capability
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/alan-turing-institute/trustee_cc_review
+  # To autogenerate a Table of Contents, run "myst init --write-toc"
+site:
+  template: article-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png
