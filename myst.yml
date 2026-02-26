@@ -8,6 +8,9 @@ project:
   # authors: []
   github: https://github.com/alan-turing-institute/trustee_cc_review
   # To autogenerate a Table of Contents, run "myst init --write-toc"
+  exports:
+    - format: pdf
+      template: curvenote
 site:
   template: article-theme
   # options:
