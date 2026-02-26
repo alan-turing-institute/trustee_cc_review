@@ -280,13 +280,13 @@ Combining Kata with secure VMs, Confidential Containers allows a container engin
 
 :::{table} Vendor TEE implementations
 :label: tab-vendor
-| Vendor   | Hardware   | Archetype                                   | Implementation                              | Container Support[^cc]   |
-| -------- | ---------- | ------------------------------------------- | ------------------------------------------- | ------------------------ |
-| AMD      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | SEV-SNP                                     | ✅ (with Kata)           |
-| ARM      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | CCA                                         | 🟠 (attestation only)    |
-| Intel    | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | TDX                                         | ✅ (with Kata)           |
-| Intel    | CPU        | [Enclave](#sec-ccs-cc-archetypes-enclave)   | SGX                                         | ✅                       |
-| Nvidia   | GPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | compatibile with SEV-SNP, CCA and TDX       |                          |
+| Vendor   | Hardware   | Archetype                                   | Implementation                              | Container Support[^cc]     |
+| -------- | ---------- | ------------------------------------------- | ------------------------------------------- | ------------------------   |
+| AMD      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | SEV-SNP                                     | yes (with Kata)            |
+| ARM      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | CCA                                         | partial (attestation only) |
+| Intel    | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | TDX                                         | yes (with Kata)            |
+| Intel    | CPU        | [Enclave](#sec-ccs-cc-archetypes-enclave)   | SGX                                         | yes                        |
+| Nvidia   | GPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | compatibile with SEV-SNP, CCA and TDX       |                            |
 :::
 
 [^cc]: Supported by the [Confidential Containers project](https://confidentialcontainers.org/docs/overview/)
@@ -450,19 +450,19 @@ It is comprised of Rubin GPUs and Vera CPUs (with custom ARMv9-A cores) on a tig
 :label: tab-system
 | Category   | System                                                               | TEE Support   | Details                                                                   |
 | ---------- | -------------                                                        | ------------- | ------------------------------------------------------------------------- |
-| AIRR       | Dawn                                                                 | ❌            | Pre-TDX Intel CPU generation                                              |
-| AIRR       | Isambard AI                                                          | ❌            | The GH200 superchips' Grace CPU does not support RME                      |
-| Cloud      | AWS                                                                  | ✅            | [](#sec-availability-cloud-aws)                                           |
-| Cloud      | Azure                                                                | ✅            | [](#sec-availability-cloud-azure)                                         |
-| Cloud      | GCP                                                                  | ✅            | [](#sec-availability-cloud-gcp)                                           |
-| STFC       | Mary Coombs                                                          | 🟠            | Hardware details not confirmed but will include H100s                     |
-| Tier 1     | [ARCHER 2](https://www.archer2.ac.uk/about/hardware.html)            | 🟠            | CPUs with SEV (but not SNP) support                                       |
-| Tier 2     | [Baskerville](https://docs.baskerville.ac.uk/system/)                | 🟠            | Very small number of nodes with H100s and AMD CPUs with SEV-SNP support   |
-| Tier 2     | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | ❌            | Pre-TDX Intel CPU generation                                              |
-| Tier 2     | [Cirrus](https://www.cirrus.ac.uk/about/hardware-software/)          | ✅            | AMD CPUs with SEV-SNP support                                             |
-| Tier 2     | [Kelvin 2](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types) | ✅            | Nodes supporting SEV, small number of nodes supporting SEV-SNP            |
-| Tier 2     | [Sulis](https://sulis-hpc.github.io/techspecs/)                      | ✅            | Variety of nodes, including some with SEV and SEV-SNP support             |
-| Tier 2     | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | ❌            | CPUs with SEV (but not SNP) support, incompatible GPUs                    |
+| AIRR       | Dawn                                                                 | no            | Pre-TDX Intel CPU generation                                              |
+| AIRR       | Isambard AI                                                          | no            | The GH200 superchips' Grace CPU does not support RME                      |
+| Cloud      | AWS                                                                  | yes           | [](#sec-availability-cloud-aws)                                           |
+| Cloud      | Azure                                                                | yes           | [](#sec-availability-cloud-azure)                                         |
+| Cloud      | GCP                                                                  | yes           | [](#sec-availability-cloud-gcp)                                           |
+| STFC       | Mary Coombs                                                          | partial       | Hardware details not confirmed but will include H100s                     |
+| Tier 1     | [ARCHER 2](https://www.archer2.ac.uk/about/hardware.html)            | partial       | CPUs with SEV (but not SNP) support                                       |
+| Tier 2     | [Baskerville](https://docs.baskerville.ac.uk/system/)                | partial       | Very small number of nodes with H100s and AMD CPUs with SEV-SNP support   |
+| Tier 2     | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | no            | Pre-TDX Intel CPU generation                                              |
+| Tier 2     | [Cirrus](https://www.cirrus.ac.uk/about/hardware-software/)          | yes           | AMD CPUs with SEV-SNP support                                             |
+| Tier 2     | [Kelvin 2](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types) | yes           | Nodes supporting SEV, small number of nodes supporting SEV-SNP            |
+| Tier 2     | [Sulis](https://sulis-hpc.github.io/techspecs/)                      | yes           | Variety of nodes, including some with SEV and SEV-SNP support             |
+| Tier 2     | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | no            | CPUs with SEV (but not SNP) support, incompatible GPUs                    |
 :::
 
 ### Cloud
