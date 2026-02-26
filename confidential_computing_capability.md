@@ -65,48 +65,7 @@ An overview of this is shown in [](#fig-tcb-and-rot)
 
 ::::{figure}
 :label: fig-tcb-and-rot
-:::{mermaid}
-block
-  columns 3
-  block:group_tee:2
-    columns 2
-    software
-    data
-  end
-  tee["TEE and TCB"]
-  block:group_host:2
-    columns 1
-    hypervisor
-    other["host software, drivers"]
-    hostos["host OS"]
-  end
-  host["untrusted host components"]
-  block:group_rot:2
-    columns 1
-    firmware["firmware and microcode"]
-    cpu["CPU"]
-    vendor["CPU vendor"]
-  end
-  rot["hardware root of trust"]
-
-classDef label fill:#FFFFFF,stroke-width:0px;
-class tee label
-class host label
-class rot label
-classDef group fill:#FFFFFF,stroke-width:4px,stroke:#999999;
-class group_tee group
-class group_host group
-class group_rot group
-classDef trusted fill:#4DAF4A,stroke-width:0px;
-class software trusted
-class data trusted
-class cpu trusted
-class firmware trusted
-class vendor trusted
-classDef untrusted fill:#377EB8,stroke-width:0px;
-class hostos untrusted
-class hypervisor untrusted
-class other untrusted
+:::{image} https://mermaid.ink/img/pako:eNp9lE1zmzAQhv8Ko1yph2-Mekps59ZpZ5JeWjodBQmbCSBGEo5dj_97VxLgmMblgvbRfrxaLZxQwSlDGL3UvHjNW8cpeN03rXRCbRiKt4L33W_FGA40vPgMpuSleiOCWYsSRfSKtVS_IOxnjp43G4e01HlePeTo1zz1jks1z-1bc3fsmNhXkgtrc7VjAhLqkKmw61BR7ZmQQ24Ig20uR7-vT8PGoElD2OtbJXqpGDUAKjcdb1mr5AcSBb-lsKxEo0VAwnFpjtpUheC6u5OoouvBafXt-0T2IIgLCwfjWimU1Ycggpq8gnPl8NIxuo1n3hY1kXLNSqcmL6wGOXWN7x7N40ol-Cv79FZRtcNed_g8uOtbsf4jMB24IlD6CugSphf_KRF1hwHgu8w8U8VpiOzqGpvqH3Ct4T3WGsY7syqi9f1jdH_7oOOIjGEj11M6Z3A_czTd6Izbu5pRre4yU1ZfmKabh-VtfXZQL2ETn-b-3z3zDbzHyEUNEw2pKHzJJz03OQKfBkYPw5KykvQ1zEvensGV9Io_HdsCYUjAXAT93e4QLkktweo7aA1bV2QrSDPRjrQ_OG_GEEYrxcUX--swfxDjgvAJHRD2s3iRRoHv-4GXeHGUuuiIcJAGCy-L_WUUBomf-tnZRX9MTm8RZ8sk8cIgjoIwTLLERVuhDzNUF9BtJlYcjgzZ4_NfPl2j3w?type=png
 :::
 A block diagram showing an example of a TEE implementation, showing the TCB, the untrusted host resources, and the hardware root of trust.
 ::::
@@ -188,17 +147,7 @@ The basic workflow of attestation is shown in [](#fig-attestation).
 
 ::::{figure}
 :label: fig-attestation
-:::{mermaid}
-flowchart LR
-  Attestor
-  Verifier
-  Endorser
-  rp[Relying Party]
-  rpo[Relying Party Owner]
-  Attestor --> |Evidence| Verifier
-  Endorser --> |Endorsements| Verifier
-  Verifier --> |Attestation result| rp
-  rpo --> |Policy| rp
+:::{image} https://mermaid.ink/img/pako:eNptkM1ugzAQhF_F2jOJMAQIPlSq2txaNUqlHlpysPBCLIEdGdOUJnn3GpxUjdTb7Ojb2Z8jlFogMKgafSh33FjytCkUIffWYme1GfUbGllJnPRKCW06r83-Y4PNIFVN1q5z2HpT37rk5aDQbP-GktnsjpxWn1KgKvH074AL46sWle1uuav2nE_mVmpFDHZ9Y09uk8s-HlnrRpbDaEMALZqWS-EOP45QAXbnhhTAnBRYcRdQQKHODuW91a-DKoFZ02MARvf1DljFm85V_V5wi4-S14a3v-6eq3et22sLCumufvafnh4-IcCO8AWM5sk8W0SU0ihMw2SRBTAAi7JoHuYJXS7iKKUZzc8BfE-Z4TzJl2kaxnFOaRIlSRxAbcZjLtMNKoHmQffKAsvPP-Fwn-A?type=png
 :::
 The flow of information for a TEE attestation.
 ::::
@@ -270,49 +219,7 @@ In contrast to [the previous, similar example](#fig-tcb-and-rot) the guest OS is
 
 ::::{figure}
 :label:fig-tcb-secure-vm
-:::{mermaid}
-block
-  columns 3
-  block:group_tee:2
-    columns 2
-    software data
-    guest["guest OS"]
-  end
-  tee["TEE and TCB"]
-  block:group_host:2
-    columns 1
-    hypervisor
-    other["host software, drivers"]
-    hostos["host OS"]
-  end
-  host["untrusted host components"]
-  block:group_rot:2
-    columns 1
-    firmware["firmware and microcode"]
-    cpu["CPU"]
-    vendor["CPU vendor"]
-  end
-  rot["hardware root of trust"]
-
-classDef label fill:#FFFFFF,stroke-width:0px;
-class tee label
-class host label
-class rot label
-classDef group fill:#FFFFFF,stroke-width:4px,stroke:#999999;
-class group_tee group
-class group_host group
-class group_rot group
-classDef trusted fill:#4DAF4A,stroke-width:0px;
-class software trusted
-class data trusted
-class guest trusted
-class cpu trusted
-class firmware trusted
-class vendor trusted
-classDef untrusted fill:#377EB8,stroke-width:0px;
-class hostos untrusted
-class hypervisor untrusted
-class other untrusted
+:::{image} https://mermaid.ink/img/pako:eNp9lF1vmzAUhv-K5d6yiK9A8K7aJL2bNqndzcY0uWAIKmBkmzRZlP--YxtIw5pxA37O1-vjY0444znDBL_UPHtNW4QyXvdNK1GgF4aSUvC--60YI76GF59hKXmh3qhgKKeKWlT2TKqfKTZv9PUpxb-0gbW5fkEqsD1vt4i2OXpePwzm9-V2XKp5Pc8ud8eOiX0lubBrrnZMQEIdMolxUC6qPRNyyA1hYOZy9Jtr0hBsfatELxXLDYDKTcdb1ir5gUTBbyksKtFoEZBw_DRbbapMcN3xSVTW9eC0_vZ9InsQxIWFw-JaKZTVm6AiN3kF5wrxAhndxjNts5pKuWEFqukLq0FOXZO7R_M4Ugn-yj69VbnaEbc7fB7c9alY_xGYDlwRKH0FdAnTi_-UCLvDAMhdYp6p4jRY9usam-ofcK3hPdYaxjOzKsLN_WN4f3uj07wOYSPX4ztndoBnEA5tjqZjnnF7gDOqJV8GzYoO4nj7sLot2k7vJWzi02X412YuxgVjBzdMNLTK4cKf9CilGDwamEYCnzkraF_DCKXtGVxpr_jTsc0wgXDmYGh5ucOkoLWEVd9Bt9imoqWgzUQ72v7gvBlDWF4pLr7YP4z50RgXTE74gImXLBdx6Hue57uRuwxjBx8x8WN_4SZLbxUGfuTFXnJ28B-T010sk1UUuYG_DP0giJLIwaXQmxmqC-g1E2sOG4bs8fkvuVSyUA?type=png
 :::
 A block diagram showing the trusted and untrusted components of an example secure VM TEE.
 ::::
@@ -346,46 +253,7 @@ The basic workflow for an enclave TEE is,
 
 ::::{figure}
 :label:fig-tcb-enclave
-:::{mermaid}
-block
-  columns 3
-  block:group_tee:2
-    columns 2
-    app_trusted["trusted app component\n and enclave"]
-    app_untrusted["untrusted app component"]
-  end
-  tee["application"]
-  block:group_host:2
-    columns 1
-    other["host software, drivers"]
-    hostos["host OS"]
-  end
-  host["untrusted host components"]
-  block:group_rot:2
-    columns 1
-    firmware["firmware and microcode"]
-    cpu["CPU"]
-    vendor["CPU vendor"]
-  end
-  rot["hardware root of trust"]
-
-classDef label fill:#FFFFFF,stroke-width:0px;
-class tee label
-class host label
-class rot label
-classDef group fill:#FFFFFF,stroke-width:4px,stroke:#999999;
-class group_tee group
-class group_host group
-class group_rot group
-classDef trusted fill:#4DAF4A,stroke-width:0px;
-class app_trusted trusted
-class cpu trusted
-class firmware trusted
-class vendor trusted
-classDef untrusted fill:#377EB8,stroke-width:0px;
-class app_untrusted untrusted
-class hostos untrusted
-class other untrusted
+:::{image} https://mermaid.ink/img/pako:eNp9VE1v2zAM_SuGevUCf8axduqa9TZsQLHL5mJQbTkxaouGJKfpgvz3UfJXnLX1xeTTI_lE0j6RHApOKHmqIX_OhOPkUHeNUE5oHIvSnYSu_aM5p4EBZ87gshZPZac0L35nZLAMisSmBcGFzpDJROFwkdfswDPyOId2Yg6e7Kvwns9FYV6oBKlIqKuc6QrEcHypdg9KX8v1exf0nktMYCiOglK_MMldp5DVgUs1STPHoEbe94elBgMu9FrWJFi9IUnCe4rKSjZGBCYcTdutpsolmAFNovK2Q9Ldj58TckBBIHtwcJZKsay5BJOFzSsBtAOlY3VbZmZmotSWl07NnniNcuqa3tzbx1VawjP_9FIVek-99vh5oJsp9PwRsB1YIFh6AZgSthcflIja4wDQm9Q-U8VpD3trCdvqb-BGwyVsNIwz61VE29v76Pb9i16s9xg5HuE4rqFpgFd4P5or1IiZV6iXEybJ1y-bj-XMMZN1OQVQ_-N262eYuKThsmFVgR__yewJfrl73uCqUTQLXrKuxv3IxBmprNPw8CpyQjGcuwT7udsTWrJaode1BdN8W7GdZM2Etkz8AmjGEF5UGuS3_m9jfzqWQuiJHAn103iVRIHv-4G39uIocckroUESrLw09jdRGKz9xE_PLvlrc3qrON2s114YbtIojsM4dclOmssM1SW2m8s7wAtjnvj8D347uUg?type=png
 :::
 A block diagram showing the trusted and untrusted components of an example enclave TEE.
 ::::
