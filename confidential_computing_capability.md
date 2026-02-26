@@ -23,7 +23,10 @@ authors:
   - name: Jim Madge
     orcid: 0000-0001-6044-164X
 license: CC-BY-4.0
-keywords: confidential computing, trusted research, high performance computing
+keywords:
+    - confidential computing
+    - trusted research
+    - high performance computing
 bibliography:
   - references.bib
 ---
