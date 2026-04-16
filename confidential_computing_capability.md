@@ -321,7 +321,7 @@ A secure VM TEE may provision a lower-trust portion of memory, which allows the 
 
 An advantage of the VM-based TEEs is their flexibility.
 Little or no code changes will be required for software to run in such a TEE.
-Building a secure application does not involve using CC APIs (possibly with the exception of moving data between host and guest) a confidentiality is guaranteed by the hardware and VM.
+Building a secure application does not involve using confidential computing APIs (possibly with the exception of moving data between host and guest) a confidentiality is guaranteed by the hardware and VM.
 
 (sec-ccs-cc-archetypes-enclave)=
 ##### Enclaves
