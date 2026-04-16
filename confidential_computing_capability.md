@@ -6,9 +6,11 @@ abbreviations:
     CCA: Confidential Compute Architecture
     CNCF: Cloud Native Computing Foundation
     CPU: Central Processing Unit
+    EAT: Entity Attestation Token
     GPU: Graphics Processing Unit
     IETF: Internet Engineering Task Force
     IME: Intel Management Environment
+    JWT: JSON Web Token
     OS: Operating System
     PROM: programmable read-only memory
     RFC: request for comments
