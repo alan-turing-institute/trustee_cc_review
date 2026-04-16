@@ -582,7 +582,7 @@ It is comprised of Rubin GPUs and Vera CPUs (with custom ARMv9-A cores) on a tig
 :label: tab-system
 | Category   | System                                                               | TEE Support   | Details                                                                   |
 | ---------- | -------------                                                        | ------------- | ------------------------------------------------------------------------- |
-| AIRR       | Dawn                                                                 | ❌            | Old hardware generation (Intel CPUs)                                      |
+| AIRR       | Dawn                                                                 | ❌            | Pre-TDX Intel CPU generation                                              |
 | AIRR       | Isambard AI                                                          | ❌            | The GH200 superchips' Grace CPU does not support RME                      |
 | Cloud      | AWS                                                                  | ✅            | [](#sec-availability-cloud-aws)                                           |
 | Cloud      | Azure                                                                | ✅            | [](#sec-availability-cloud-azure)                                         |
@@ -590,11 +590,11 @@ It is comprised of Rubin GPUs and Vera CPUs (with custom ARMv9-A cores) on a tig
 | STFC       | Mary Coombs                                                          | 🟠            | Hardware details not confirmed but will include H100s                     |
 | Tier 1     | [ARCHER 2](https://www.archer2.ac.uk/about/hardware.html)            | 🟠            | CPUs with SEV (but not SNP) support                                       |
 | Tier 2     | [Baskerville](https://docs.baskerville.ac.uk/system/)                | 🟠            | Very small number of nodes with H100s and AMD CPUs with SEV-SNP support   |
-| Tier 2     | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | ❌            | Old hardware generation (Intel CPUs and Nvidia GPUs)                      |
+| Tier 2     | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | ❌            | Pre-TDX Intel CPU generation                                              |
 | Tier 2     | [Cirrus](https://www.cirrus.ac.uk/about/hardware-software/)          | ✅            | AMD CPUs with SEV-SNP support                                             |
 | Tier 2     | [Kelvin 2](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types) | ✅            | Nodes supporting SEV, small number of nodes supporting SEV-SNP            |
 | Tier 2     | [Sulis](https://sulis-hpc.github.io/techspecs/)                      | ✅            | Variety of nodes, including some with SEV and SEV-SNP support             |
-| Tier 2     | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | ❌            | SEV compatible processors but all nodes with incompatible GPUs            |
+| Tier 2     | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | ❌            | CPUs with SEV (but not SNP) support, incompatible GPUs                    |
 :::
 
 ### Cloud
