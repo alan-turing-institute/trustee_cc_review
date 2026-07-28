@@ -4,7 +4,7 @@ extends:
   - abbreviations.yml
 project:
   id: 6bb2d763-2074-4b2f-ae50-c529d4ff95b4
-  title: Confidential Computing Capability
+  # title: Confidential Computing Capability
   # description:
   # keywords: []
   # authors: []
@@ -15,6 +15,12 @@ project:
   exports:
     - format: pdf
       template: curvenote
+  toc:
+    - file: confidential_computing.md
+    - file: support.md
+    - file: availability.md
+  bibliography:
+    - references.bib
 site:
   template: article-theme
   # options:
