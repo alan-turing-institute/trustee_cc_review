@@ -2,25 +2,6 @@
 title: Confidential Computing Capability
 abstract: |
   An assessment of the current confidential computing offerings and their availablity to the UK research community.
-abbreviations:
-    CCA: Confidential Compute Architecture
-    CNCF: Cloud Native Computing Foundation
-    CPU: Central Processing Unit
-    EAT: Entity Attestation Token
-    GPU: Graphics Processing Unit
-    IETF: Internet Engineering Task Force
-    IME: Intel Management Environment
-    JWT: JSON Web Token
-    OS: Operating System
-    PROM: programmable read-only memory
-    RFC: request for comments
-    RME: Realm Management Extensions
-    SEV: Secure Encrypted Virtualisation
-    SNP: Secure Nested Paging
-    SoC: System on a Chip
-    TCB: Trusted Compute Base
-    TEE: Trusted Execution Environment
-    VM: Virtual Machine
 authors:
   - name: Jim Madge
     orcid: 0000-0001-6044-164X
