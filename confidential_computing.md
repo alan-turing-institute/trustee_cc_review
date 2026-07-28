@@ -128,7 +128,7 @@ It is therefore reliable claim about the state of a TEE, which can be compared w
 
 The specific attention process we will discuss here is remote attestation.
 In brief, remote attestation is a process that uses a third party (_i.e._ neither the TEE, nor the part requesting verification of the TEE) to assess the TEE.
-This is defined formally in IETF's  request for comments 9934 @rfc9334
+This is defined formally in IETF's  request for comments 9934 @rfc9334.
 The RFC sets out a number of roles, some of which are paraphrased here.
 
 :::{glossary}
