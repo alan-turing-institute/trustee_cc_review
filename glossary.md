@@ -3,36 +3,39 @@ title: Glossary
 license: CC-BY-4.0
 ---
 
-<!-- ## Glossary -->
+## Glossary
 
-<!-- :::{glossary} -->
-<!-- Attestation -->
-<!-- : … -->
+:::{glossary}
+Attestation
+: …
 
-<!-- CPU -->
-<!-- : … -->
+CPU
+: …
 
-<!-- GPU -->
-<!-- : … -->
+GPU
+: …
 
-<!-- Host -->
-<!-- : … -->
+Host
+: …
 
-<!-- Hypervisor -->
-<!-- : … -->
+Hypervisor
+: …
 
-<!-- Public-key Encryption -->
-<!-- : … -->
+Public-key Encryption
+: …
 
-<!-- Remote Attestation -->
-<!-- : Attestation by a system other than the one hosting the TEE. This enables third parties to verify a TEE is valid. -->
+Remote Attestation
+: Attestation by a system other than the one hosting the TEE. This enables third parties to verify a TEE is valid.
 
-<!-- Trust Domain -->
-<!-- : … -->
+Secure Processor
+: …
 
-<!-- Trusted Execution Environment -->
-<!-- : … -->
+Trust Domain
+: …
 
-<!-- Virtual Machine -->
-<!-- : … -->
-<!-- ::: -->
+Trusted Execution Environment
+: …
+
+Virtual Machine
+: …
+:::

@@ -19,6 +19,8 @@ project:
     - file: confidential_computing.md
     - file: support.md
     - file: availability.md
+    - file: tees_for_tres.md
+    - file: glossary.md
     - file: RATS_roles.md
   bibliography:
     - references.bib

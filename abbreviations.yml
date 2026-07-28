@@ -4,11 +4,13 @@ project:
     CCA: Confidential Compute Architecture
     CNCF: Cloud Native Computing Foundation
     CPU: Central Processing Unit
+    CVM: Confidential Virtual Machine
     EAT: Entity Attestation Token
     GPU: Graphics Processing Unit
     IETF: Internet Engineering Task Force
     IME: Intel Management Environment
     JWT: JSON Web Token
+    OCI: Open Container Initiative
     OS: Operating System
     PROM: programmable read-only memory
     RFC: request for comments
@@ -18,4 +20,5 @@ project:
     SoC: System on a Chip
     TCB: Trusted Compute Base
     TEE: Trusted Execution Environment
+    TRE: Trusted Research Environment
     VM: Virtual Machine
