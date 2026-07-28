@@ -46,49 +46,51 @@ An overview of this is shown in [](#fig-tcb-and-rot)
 
 ::::{figure}
 :label: fig-tcb-and-rot
-:::{mermaid}
-block
-  columns 3
-  block:group_tee:2
-    columns 2
-    software
-    data
-  end
-  tee["TEE and TCB"]
-  block:group_host:2
-    columns 1
-    hypervisor
-    other["host software, drivers"]
-    hostos["host OS"]
-  end
-  host["untrusted host components"]
-  block:group_rot:2
-    columns 1
-    firmware["firmware and microcode"]
-    cpu["CPU"]
-    vendor["CPU vendor"]
-  end
-  rot["hardware root of trust"]
-
-classDef label fill:#FFFFFF,stroke-width:0px;
-class tee label
-class host label
-class rot label
-classDef group fill:#FFFFFF,stroke-width:4px,stroke:#999999;
-class group_tee group
-class group_host group
-class group_rot group
-classDef trusted fill:#4DAF4A,stroke-width:0px;
-class software trusted
-class data trusted
-class cpu trusted
-class firmware trusted
-class vendor trusted
-classDef untrusted fill:#377EB8,stroke-width:0px;
-class hostos untrusted
-class hypervisor untrusted
-class other untrusted
+:::{image} https://mermaid.ink/img/pako:eNp9lE1zmzAQhv8Ko1yph2-Mekps59ZpZ5JeWjodBQmbCSBGEo5dj_97VxLgmMblgvbRfrxaLZxQwSlDGL3UvHjNW8cpeN03rXRCbRiKt4L33W_FGA40vPgMpuSleiOCWYsSRfSKtVS_IOxnjp43G4e01HlePeTo1zz1jks1z-1bc3fsmNhXkgtrc7VjAhLqkKmw61BR7ZmQQ24Ig20uR7-vT8PGoElD2OtbJXqpGDUAKjcdb1mr5AcSBb-lsKxEo0VAwnFpjtpUheC6u5OoouvBafXt-0T2IIgLCwfjWimU1Ycggpq8gnPl8NIxuo1n3hY1kXLNSqcmL6wGOXWN7x7N40ol-Cv79FZRtcNed_g8uOtbsf4jMB24IlD6CugSphf_KRF1hwHgu8w8U8VpiOzqGpvqH3Ct4T3WGsY7syqi9f1jdH_7oOOIjGEj11M6Z3A_czTd6Izbu5pRre4yU1ZfmKabh-VtfXZQL2ETn-b-3z3zDbzHyEUNEw2pKHzJJz03OQKfBkYPw5KykvQ1zEvensGV9Io_HdsCYUjAXAT93e4QLkktweo7aA1bV2QrSDPRjrQ_OG_GEEYrxcUX--swfxDjgvAJHRD2s3iRRoHv-4GXeHGUuuiIcJAGCy-L_WUUBomf-tnZRX9MTm8RZ8sk8cIgjoIwTLLERVuhDzNUF9BtJlYcjgzZ4_NfPl2j3w?type=png
 :::
+% :::{mermaid}
+% block
+%   columns 3
+%   block:group_tee:2
+%     columns 2
+%     software
+%     data
+%   end
+%   tee["TEE and TCB"]
+%   block:group_host:2
+%     columns 1
+%     hypervisor
+%     other["host software, drivers"]
+%     hostos["host OS"]
+%   end
+%   host["untrusted host components"]
+%   block:group_rot:2
+%     columns 1
+%     firmware["firmware and microcode"]
+%     cpu["CPU"]
+%     vendor["CPU vendor"]
+%   end
+%   rot["hardware root of trust"]
+% 
+% classDef label fill:#FFFFFF,stroke-width:0px;
+% class tee label
+% class host label
+% class rot label
+% classDef group fill:#FFFFFF,stroke-width:4px,stroke:#999999;
+% class group_tee group
+% class group_host group
+% class group_rot group
+% classDef trusted fill:#4DAF4A,stroke-width:0px;
+% class software trusted
+% class data trusted
+% class cpu trusted
+% class firmware trusted
+% class vendor trusted
+% classDef untrusted fill:#377EB8,stroke-width:0px;
+% class hostos untrusted
+% class hypervisor untrusted
+% class other untrusted
+% :::
 A block diagram showing an example of a TEE implementation, showing the TCB, the untrusted host resources, and the hardware root of trust.
 ::::
 
@@ -251,7 +253,9 @@ In contrast to [the previous, similar example](#fig-tcb-and-rot) the guest OS is
 
 ::::{figure}
 :label:fig-tcb-secure-vm
-:::{mermaid}
+:::{image} https://mermaid.ink/img/pako:eNp9k8ty2yAUhl-FIVvFIwdf6SqxnW0703TTqtMhErpMJNAAcpx6_O49gIRjNY424nzn9gOHI05lxjHFz7VMXxKBUCrrrhEaEWs4Sgslu_aP4ZzeWXiO6U0tc_PKFEcZM8yjouPa_Eqw-6Ov3xP82zq4yOwPSoHvabdDTGToafPQu9-3K6U2435Tb5ZvLVf7SkvlbWlKrqCgTQliIpSpas-V7mtDGrilHuLGmiwEXyeM6rThmQPQuWml4MLoDyQqeU1hXqnGioCCw9JttalSJe2JB1Fp20HQ5tuPQPYgSCoPe-NSKbS1m2Aqc3WVlAbJHDndLjIRac203vIc1eyZ1yCnrunNo_sibZR84bevVWZKGreHL324vRUfPwB3AhcEWl8A28KdxSctZu2hB_Rm7b7QMQyWX11i1_0DbjW8x1bDcGdexWx7_zi7v77RMK992sDt-I6ZH-ARhEsbo3DNI-4vcESt5POgedFkudw9rK6L9tN7Tgs8PIb_fe5hnDGOcKGqDFOweYQbrhpmTXy0Y5VgiG5gMiksM56zroZxSsQJ0lomfkrZDJlw-kWJac5qDVbXwsHxbcUKxZpAFWycq42E7piS2NXA9IgP1iKTmCymC0JIHC9X0wi_YTpfTaar5TxeLu7WZD2bk1OE_7qm8QT46R8dq6MJ?type=png
+:::
+% :::{mermaid}
 block
   columns 3
   block:group_tee:2
@@ -294,8 +298,8 @@ classDef untrusted fill:#377EB8,stroke-width:0px;
 class hostos untrusted
 class hypervisor untrusted
 class other untrusted
-:::
-A block diagram showing the trusted and untrusted components of an example secure VM TEE.
+% :::
+The trusted and untrusted components of an example secure VM TEE.
 ::::
 
 A secure VM TEE may provision a lower-trust portion of memory, which allows the transfer of data between the host and guest.
@@ -327,7 +331,9 @@ The basic workflow for an enclave TEE is,
 
 ::::{figure}
 :label:fig-tcb-enclave
-:::{mermaid}
+:::{image} https://mermaid.ink/img/pako:eNp9k8tu2zAQRX9FYLaqYb0tdpXGzbYFim5aFQUjUbYQiSOQlOPW8L93SL0sNYk25lze4RxyxheSQ8EJJU815M-ZcJwc6q4RyglMYFV6kNC1vzXn1Dfi7BlC1uKu7JTmxc-MDCujorFpQXChM3QyUThc5DU78Yz8mlM7MSdP61V67-eiMD9IglY01FXOdAVi2L6lPYLSa1yvD0EfucQDjMVRUOoXJrnrFLI6cakmNLMNavR9-bZkMOKC17omYPUKkoS3iMpKNgYCDxyX9rWaKpdgGjRB5W2Hpoev3yflhEAge3EIlqRY1lyCycKeKwG0A6Vjua0zMz1Ras9Lp2ZPvEacuqZ3j_ZzlZbwzD-8VIU-0m17_jjYTRd6_yjYF1goWHohmBL2Ld4pEbbnQaB3qf2mitMc9qulbKu_ohuGW9kwjD3rKcL9_WN4__ZFb8Z7zBy3sB1raWrgSu9bs1INzDxCPU6QJJ8_7d7HmXOm1W0XQP2v26mfZeKSg6wKQjHmLmm4bJgJycXMDP6Lj7zBsaO4LHjJuhpnJRNXTGuZ-AHQjJn4tIcjoSWrFUZdWzDN9xU7SNZMqsS7c_kAWJ1QP47tIYReyJlQL_E3URgE0db30sSPI9z9Q2gYeJt0t0t93_NSL9zGV5f8tWW3m2QbpUkShOEuiYIgjq__AJGorRk?type=png
+:::
+% :::{mermaid}
 block
   columns 3
   block:group_tee:2
@@ -367,8 +373,8 @@ classDef untrusted fill:#377EB8,stroke-width:0px;
 class app_untrusted untrusted
 class hostos untrusted
 class other untrusted
-:::
-A block diagram showing the trusted and untrusted components of an example enclave TEE.
+% :::
+The trusted and untrusted components of an example enclave TEE.
 ::::
 
 Enclave TEEs have a smaller TCB compared to [VM-based TEEs](#sec-ccs-cc-archetypes-vm) as there is no guest OS, and only a small part of any application needs to be trusted.
