@@ -144,12 +144,10 @@ It is therefore reliable claim about the state of a TEE, which can be compared w
 
 It is not feasible for most organisations to review attestation evidence themselves, due to the complex and technical nature of the evidence [@ccc-attestation].
 Therefore, it is expected that most TEE users will rely on a {term}`verifier` to assess the evidence and obtain endorsements.
-This is outlined in @rfc9334.
-In these cases the {term}`relying party owner` must trust the {term}`verifier`.
-[RATS trust model](https://www.rfc-editor.org/info/rfc9334/#name-relying-party)
+This is defined formally in IETF's  request for comments 9934 [@rfc9334].
+In these cases the {term}`relying party owner` must trust the {term}`verifier` and {term}`verifier owner` to process evidence on their behalf.
 
 Remote attestation is a process that uses a third party (_i.e._ neither the TEE, nor the part requesting verification of the TEE) to assess the TEE.
-This is defined formally in IETF's  request for comments 9934 @rfc9334.
 The RFC sets out a number of roles, which are paraphrased in [](#sec-rats).
 
 :::{important} Attestation result
@@ -157,14 +155,7 @@ It is important to understand that, although the {term}`verifier` will have a po
 It is always the responsibility of the {term}`relying party` to inspect the attestation report and decide what to do following the {term}`relying party owner's <relying party owner>` policy.
 :::
 
-:::{note} Trust
-The roles and remote attestation process illustrates where trust lies when using a TEE.
-The {term}`attester` does not validate itself or make a statement about its security, it produces evidence.
-The {term}`verifier` processes evidence, possibly drawing from {term}`endorsers <endorser>` and must be trusted to correctly arrive at its conclusions.
-As an extension, any {term}`endorsers <endorser>` must also be trusted to provide correct information to the {term}`verifier`.
-:::
-
-The basic workflow of attestation is shown in [](#fig-attestation).
+The basic workflow of remote attestation, showing how data flows between roles, is shown in [](#fig-attestation).
 
 ::::{figure}
 :label: fig-attestation
@@ -187,7 +178,15 @@ flowchart LR
 The flow of information for a TEE attestation.
 ::::
 
-The actual procedure to achieve remote attestation may be implemented in different ways.
+:::{note} Trust
+The roles and remote attestation process illustrates where trust lies when using a TEE.
+The {term}`attester` does not validate itself or make a statement about its security, it produces evidence.
+The {term}`verifier` processes evidence must be trusted to correctly arrive at its conclusions.
+Therefore, any {term}`endorsers <endorser>` and {term}`reference value providers <reference value provider>` must also be trusted to provide correct information to the {term}`verifier`.
+The RATS trust model is explained in more detail [in RFC 9334](https://www.rfc-editor.org/info/rfc9334/#name-relying-party).
+:::
+
+The actual procedure of a remote attestation process may be implemented in different ways.
 @rfc9334 describes two possible patterns.
 
 In the [passport model](https://www.ietf.org/rfc/rfc9334.html#name-passport-model) the {term}`attester` requests an attestation report from the {term}`verifier`, who then returns the attestation results directly back to the {term}`attester`.
@@ -212,6 +211,5 @@ To organisations where TEEs are critical, there is a risk of
 
 - Reliance on attestation providers, with no ability to host a local attestation service
 - Hardware manufacturers controlling attestation and refusing to support competitors' hardware
-- Withdrawal of service from attestation providers
-or reliance on third parties for organisations where TEEs in critical.
+- Withdrawal of service from attestation providers or reliance on third parties for organisations where TEEs in critical.
 :::

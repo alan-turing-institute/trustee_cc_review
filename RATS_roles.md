@@ -26,5 +26,5 @@ Verifier
   The verifier does not itself decide whether the attester is trustworthy or not but instead produces a report.
 
 Verifier Owner
-: The party (for example an organisation, or system administrator) which is able to set how the {term}`verifier` evaluates the evidence it receives from the {term}`attestor`.
+: The party (for example an organisation, or system administrator) which is able to set how the {term}`verifier` evaluates the evidence it receives from the {term}`attester`.
 :::
