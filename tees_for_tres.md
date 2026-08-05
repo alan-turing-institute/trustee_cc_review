@@ -80,38 +80,9 @@ A more holistic view of security when handling sensitive data is described by [T
 
 ### Introduction
 
-<!-- - What is a TEE -->
-<!--   - Encryption in use -->
-<!--   - CVMs as the predominent pattern -->
-<!--   - Attestation (particularly user choosing whether to accept report) -->
-
-A TEE is a reserved portion of hardware (CPU, memory and possibly GPU) that is cryptographically segregated from the rest of the system (the host, and any other TEEs).
-The contents of a TEE are unable to be read, or modified by any processes outside of the TEE, including those running on the same host.
-TEEs are the enabling technology for confidential computing [@ccc-terminology].
-TEEs operate by selectively encrypting sections of memory belonging to TEEs with enclave-unique keys.
-This is done by a trusted {term}`secure processor` which ensure encrypted memory can only be read as plain text by the correct TEE.
-Implementations vary as to how this is achieved but generally involve some kind of memory address virtualisation or remapping in addition to encryption.
-
 The attestation process produces a cryptographically verifiable report which proves that software is running in a secure TEE.
 Relying parties are therefore able to assess a TEE before deciding whether to interact with it.
 … attestation report
-
-The predominant approach to TEEs is CVMs [@ccc-terminology].
-Here, the virtual machine is run within a TEE, so that the entire guest OS and all software is within the secure enclave.
-Although this increases the size of the TCB (tcb reference) it is a convenient way to provide confidential computing, without requiring changes to existing software or developing new software with a TEE SDK.
-Due to their popularity and flexibility, this discussion will focus on CVMs.
-
-:::{important} Key point
-Ultimate trust is in the CPU vendor.
-You must trust that,
-
-1. they have produced a CPU capable of provisioning TEEs
-1. they have produced a CPU capable of generating accurate evidence
-1. their endorsement of the CPUs genuine status is correct
-
-The hardware root of trust is the CPU, which produces evidence.
-Evidence is verified by the CPU vendor, or entities on a chain of trust leading back to the vendor.
-:::
 
 (sec-security)=
 ### Security
@@ -179,14 +150,6 @@ The two further levels are,
 
 In order to effectively use confidential computing, an organisation must develop _and_ maintain a suitable policy which attestation reports will be measured against.
 There must be processes in place (whether automated or manual) to exclude non-compliant TEEs from handling sensitive workloads.
-
-:::{important} Key point
-It is not feasible for most organisations to review attestation evidence themselves, due to the complex and technical nature of the evidence [@ccc-attestation].
-Therefore, it is expected that most TEE users will rely on a {term}`verifier` to assess the evidence and obtain endorsements.
-This is outlined in @rfc9334.
-In these cases the {term}`relying party owner` must trust the {term}`verifier`.
-[RATS trust model](https://www.rfc-editor.org/info/rfc9334/#name-relying-party)
-:::
 
 (sec-tre-models)=
 ## TRE Models

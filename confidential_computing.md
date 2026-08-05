@@ -24,6 +24,10 @@ Data in use, and code being executing in a TEE is encrypted and may not be read 
 
 A TEE is a reserved portion of hardware (CPU, memory and possibly GPU) that is cryptographically segregated from the rest of the system (the host, and any other TEEs).
 The contents of a TEE are unable to be read, or modified by any processes outside of the TEE, including those running on the same host.
+TEEs are the enabling technology for confidential computing [@ccc-terminology].
+They operate by selectively encrypting sections of memory belonging to TEEs with enclave-unique keys.
+This is done by a trusted {term}`secure processor` which ensure encrypted memory can only be read as plain text by the correct TEE.
+Implementations vary as to how this is achieved but generally involve some kind of memory address virtualisation or remapping in addition to encryption.
 A TEE can prove the integrity of its TCB though an [attestation](#sec-cc-attestation) process, so its users can be informed and access whether to trust it.
 
 In any computer system the TCB defines of all of the components (hardware, software and firmware) that play a role in providing the required security.
@@ -39,7 +43,19 @@ Instead, they may be considered the "hardware root of trust" as CPU routines,
 and the ability of a hardware manufacturer to validate genuine hardware,
 play a critical role in the [attestation](#sec-cc-attestation) process.
 The CPU and CPU manufacturer are therefore the root of the chain of trust for the entire TEE and ultimately you must trust these organisation and their products.
-An overview of this is shown in [](#fig-tcb-and-rot)
+An overview of this is shown in [](#fig-tcb-and-rot).
+
+:::{important} Trust
+You must have ultimate and explicit trust is in the CPU vendor.
+You must trust that,
+
+1. they have produced a CPU capable of provisioning TEEs
+1. they have produced a CPU capable of generating accurate evidence
+1. their endorsement of the CPUs genuine status is correct
+
+The hardware root of trust is the CPU, which produces evidence.
+Evidence is verified by the CPU vendor, or entities on a chain of trust leading back to the vendor.
+:::
 
 ::::{figure}
 :label: fig-tcb-and-rot
@@ -126,13 +142,18 @@ It is therefore reliable claim about the state of a TEE, which can be compared w
 
 ### Remote Attestation
 
-The specific attention process we will discuss here is remote attestation.
-In brief, remote attestation is a process that uses a third party (_i.e._ neither the TEE, nor the part requesting verification of the TEE) to assess the TEE.
+It is not feasible for most organisations to review attestation evidence themselves, due to the complex and technical nature of the evidence [@ccc-attestation].
+Therefore, it is expected that most TEE users will rely on a {term}`verifier` to assess the evidence and obtain endorsements.
+This is outlined in @rfc9334.
+In these cases the {term}`relying party owner` must trust the {term}`verifier`.
+[RATS trust model](https://www.rfc-editor.org/info/rfc9334/#name-relying-party)
+
+Remote attestation is a process that uses a third party (_i.e._ neither the TEE, nor the part requesting verification of the TEE) to assess the TEE.
 This is defined formally in IETF's  request for comments 9934 @rfc9334.
-The RFC sets out a number of roles, those which are used here are paraphrased in [](#sec-rats).
+The RFC sets out a number of roles, which are paraphrased in [](#sec-rats).
 
 :::{important} Attestation result
-It is important to understand that the {term}`verifier` _does not_ make a decision on behalf of the {term}`relying party` as to whether they should trust a TEE.
+It is important to understand that, although the {term}`verifier` will have a policy to verify the validity of evidence, the {term}`verifier` _does not_ make a decision on behalf of the {term}`relying party` as to whether they should trust a TEE.
 It is always the responsibility of the {term}`relying party` to inspect the attestation report and decide what to do following the {term}`relying party owner's <relying party owner>` policy.
 :::
 
@@ -151,13 +172,17 @@ The basic workflow of attestation is shown in [](#fig-attestation).
 flowchart LR
   Attestor
   Verifier
+  vo[Verifier Owner]
+  rvp[Reference Value Provider]
   Endorser
   rp[Relying Party]
   rpo[Relying Party Owner]
   Attestor --> |Evidence| Verifier
   Endorser --> |Endorsements| Verifier
-  Verifier --> |Attestation result| rp
-  rpo --> |Policy| rp
+  rvp --> |Reference Values| Verifier
+  vo --> |Policy for Evidence| Verifier
+  Verifier --> |Attestation Results| rp
+  rpo --> |Policy for Results| rp
 :::
 The flow of information for a TEE attestation.
 ::::
