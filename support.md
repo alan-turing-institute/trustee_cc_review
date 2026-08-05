@@ -181,13 +181,30 @@ Translating an existing application would require splitting trusted routines and
 
 ### Confidential Containers
 
-[Confidential Containers](https://confidentialcontainers.org/) is a project of the CNCF building open source tools to support running container applications in TEEs.
-They aim to be hardware agnostic, supporting multiple TEE implementations and cloud service providers.
-Software built by the community can support the whole lifecycle of a confidential container, provisioning, attestation and secret management.
+A more recent and promising approach to confidential computing is confidential containers [@ccc-terminology].
+These are processes from OCI container images, launched by a container runtime, running in a TEE.
+That way, the container process is protecting from the host.
 
+[Confidential Containers](https://confidentialcontainers.org/) is a project of the [CNCF](https://www.cncf.io/) building open source tools to support running container applications in TEEs.
+The project extends [Kata](https://katacontainers.io/), a container runtime which runs container processes in lightweight virtual machines, rather than conventional sandboxes using Linux namespaces and cgroups.
+Confidential Containers [builds on Kata](https://confidentialcontainers.org/docs/architecture/design-overview/#kata-containers) by ensuring images and workload data are pulled by the confidential guest (not the host), handling attestation, and managing secure communication between the guest and external, trusted resources.
 There is [existing support](https://confidentialcontainers.org/docs/overview/#what-hardware-does-confidential-containers-support) for a number of different [TEE implementations](#sec-ccs-vendor) and archetypes.
-Most vendors are supported through [Kata](https://katacontainers.io/), a container runtime which dispatches container processes to virtual machines, rather than convention sandboxes using Linux namespaces and cgroups.
-Combining Kata with secure VMs, Confidential Containers allows a container engine (for example K8s) to run containers in confidential VMs.
+In addition to the container runtime, Confidential Containers maintains a set of trusted components to manage the lifecycle of ephemeral TEEs, including attestation and secret management.
+These components run off of the confidential guest and are collectively called [Trustee](https://confidentialcontainers.org/docs/attestation/).
+
+Confidential Containers uses one TEE per [pod](https://confidentialcontainers.org/docs/architecture/design-overview/#kata-containers).
+This decision was made as a compromise between security and convenience.
+The TCB is larger than if each container were run in its own TEE, but avoids the complex configuration required for containers in the same pod to share data.
+An alternative approach, would be to build a Kubernetes cluster from CVM nodes.
+This would be simpler to implement, however it greatly increases the size of the TCB as now all processes running on the kubernetes nodes, such as Kubelet and potentially etcd, would be within the TEE.
+
+Each pod is therefore crytographically isolated from both the host and other pods in the K8s cluster.
+Altogether, Confidential Containers represents a level 3 confidential computing implementation [@ccc-degrees] where attestation happens at a workload level and considers measurements of that workload.
+The confidential guest is a minimal image only capable of producing measurements and executing approved processes.
+
+Confidential Containers additionally provides [features](https://confidentialcontainers.org/docs/features/) to manage and interact with confidential containers.
+These include being able to query attestation evidence in container processes, directing the confidential guests to pull from container image proxies, and providing container processes with access to encrypted secrets.
+These tools can be used to build more complex workflows than simply running discrete confidential pods.
 
 (sec-ccs-vendor)=
 ## Vendor Support

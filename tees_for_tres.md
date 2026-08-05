@@ -113,29 +113,6 @@ The hardware root of trust is the CPU, which produces evidence.
 Evidence is verified by the CPU vendor, or entities on a chain of trust leading back to the vendor.
 :::
 
-#### Confidential Containers
-
-A more recent and promising approach to confidential computing is confidential containers [@ccc-terminology].
-These are processes from OCI container images, launched by a container runtime, running in a TEE.
-That way, the container process is protecting from the host.
-
-The [Confidential Containers](https://confidentialcontainers.org/) project achieves in a Kubernetes environment by building tools to extend [Kata](https://katacontainers.io/), a container runtime which runs container processes in lightweight virtual machines.
-Confidential Containers [builds on this](https://confidentialcontainers.org/docs/architecture/design-overview/#kata-containers) by ensuring images and workload data are pulled by the confidential guest (not the host), handling attestation, and managing secure communication between the guest and external, trusted resources.
-The set of Confidential Containers components that run off of the guest are called Trustee.
-
-Confidential Containers uses one TEE per [pod](https://confidentialcontainers.org/docs/architecture/design-overview/#kata-containers).
-This decision was made as a compromise between security and convenience.
-The TCB is larger than if each container were run in its own TEE, but avoids the complex configuration required for containers in the same pod to share data.
-An alternative approach, would be to build a Kubernetes cluster from CVM nodes.
-This would be simpler to implement, however it greatly increases the size of the TCB as now all processes running on the kubernetes nodes, such as Kubelet and potentially etcd, would be within the TEE.
-
-Confidential Containers additionally provides [features](https://confidentialcontainers.org/docs/features/) to manage and interact with confidential containers.
-These include being able to query attestation evidence in container processes, directing the confidential guests to pull from container image proxies, and providing container processes with access to encrypted secrets.
-These tools can be used to build more complex workflows than simply running discrete confidential pods.
-
-Taken altogether, Confidential Containers represents a level 3 confidential computing implementation [@ccc-degrees] where attestation happens at a workload level and considers measurements of that workload.
-The CVM is a minimal service only capable of producing measurements and executing approved processes.
-
 (sec-security)=
 ### Security
 
