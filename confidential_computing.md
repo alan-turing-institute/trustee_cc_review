@@ -182,7 +182,7 @@ flowchart LR
 The flow of information for a TEE attestation.
 ::::
 
-:::{note} Trust
+:::{important} Trust
 The roles and remote attestation process illustrates where trust lies when using a TEE.
 The {term}`attester` does not validate itself or make a statement about its security, it produces evidence.
 The {term}`verifier` processes evidence must be trusted to correctly arrive at its conclusions.
