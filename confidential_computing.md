@@ -13,7 +13,7 @@ keywords:
 
 ## Confidential Computing
 
-Confidential computing describes a set of technologies that protect data while it is in use.
+Confidential computing describes a set of technologies that protect data while it is in use [@ccc-confidential-computing].
 This is distinct from protecting data at rest, written to a storage device, or in transit, while being sent over a network.
 We could consider both of those as solved problems, with public/private key encryption, secure protocols and modern filesystems.
 Confidential computing is achieved by creating a hardware-based, attestable TEE.
@@ -117,26 +117,30 @@ Attestation verifies that,
 - The TEE has been configured correctly
 - The TEE is running on authentic hardware
 
-As part of the attestation process, the authenticity of hardware can be verified by a private/public key cryptography challenge.
-Unique, unpredictable, random private keys for each CPU are generated at the time of manufacture.
-They are written to the hardware in one-time PROM, and so are immutable.
-The manufacturer keeps set of corresponding public keys to use in identity verification challenges.
-
 In some cases, it may also verify that some software component of the TEE is in a known state, _i.e._ it has not been modified or tampered with.
 
 ### Attestation Evidence
 
 In order to attest the legitimacy of a TEE, evidence about that TEEs state must be assessed.
-The evidence consists of measurements about the TEE.
-The measurements vary based on the TEE implementation and may include,
+The evidence consists of a number of claims made by the TEE.
+Each claim consists of a name and value.
+The claims will vary, depending on a TEEs configuration and hardware, and may include,
 
-- Information about the host and its hardware, including firmware and microcode
-- In the case of a VM-based TEE, information about the guest and hypervisor
-- Information about the software in a TEE
+- CPU manufacturer, model
+- Firmware and microcode versions
+- TEE configuration data (such as types of memory encryption and address remapping)
+- Hashes of software in a TEE
 
-Measurements are collected as an evidence object, such as JWT [@rfc7519] or EAT [@rfc9711].
-Evidence is cryptographic data, collected by hardware-based routines[^firmware-microcode], making it unfeasible to tamper with the evidence collection process or to mimic a legitimate system through virtualisation.
-It is therefore reliable claim about the state of a TEE, which can be compared with a policy (set of requirements) when deciding whether to trust or interact with the TEE.
+All claims are collected as an evidence object, such as JWT [@rfc7519] or EAT [@rfc9711].
+
+It is important that evidence is correct so a TEE can be accurately assessed.
+The evidence is collected by collected by hardware-based routines[^firmware-microcode] in the {term}`secure processor` making it unfeasible for the host or hypervisor to tamper with the evidence
+The evidence object is signed by a private key belonging to the {term}`secure processor`.
+Unique, unpredictable, random private keys for each CPU are generated at the time of manufacture.
+They are written to the hardware in one-time PROM, and so are immutable.
+This signature can be verified by the hardware vendor, which keeps a set of corresponding public keys to use in identity verification challenges.
+It is therefore not possible to mimic a legitimate system through virtualisation.
+If the signature is verified, and the hardware vendor is trusted, the claims are known to be correct and produced by the CPU.
 
 [^firmware-microcode]: In principle this also includes firmware and microcode, which may be modified after manufacture. The versions and integrity of firmware and microcode should therefore be verified as part of attestation.
 
