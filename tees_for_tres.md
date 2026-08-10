@@ -1,15 +1,7 @@
 ---
 title: Trusted Execution Environments for Trusted Research Environments
 abstract: |
-  Trusted execution environments provide an unrivaled level of privacy when using a computer.
-  They fill an critical security gap, by keeping data secure while in use through encryption.
-  This is in addition to existing methods to encrypt data at rest and while in transit.
-  Trusted research environments play an important role in research, allowing researchers to work with sensitive data in a way that is effective, efficient and secure.
-  Integrating TEEs in to TREs could open new possibilities for trusted research, both in terms of the kinds of data we can use for research and for where that research can be conducted.
-  In particular, the strong isolation of a TEE from the rest of the computer could enable us to deploy TREs to third-party infrastructure (such as supercomputers or cloud services) or run them on untrusted devices (such as personal laptops).
-  However, using TEEs is not trivial and requires careful design of policy, compliance checks and investment in hardware.
-  Furthermore, though the isolation of a TEE from the rest of the computer is strong, all processes in the TEE must be trusted, so we must think critically about what a TEE does and does not protect you against.
-  Here we evaluate the situations where TEEs add value to TREs considering the costs against the benefits to security posture (?).
+  An evaluation of the costs and benefits of integrating TEEs with TREs.
 authors:
   - name: Jim Madge
     orcid: 0000-0001-6044-164X
@@ -20,6 +12,20 @@ keywords:
   - trusted research
   - trusted research environments
 ---
+
+## Introduction
+
+Trusted execution environments provide an unrivaled level of privacy when using a computer.
+They fill an critical security gap, by keeping data secure while in use through encryption.
+This is in addition to existing methods to encrypt data at rest and while in transit.
+
+Trusted research environments play an important role in research, allowing researchers to work with sensitive data in a way that is effective, efficient and secure.
+Integrating TEEs in to TREs could open new possibilities for trusted research, both in terms of the kinds of data we can use for research and for where that research can be conducted.
+In particular, the strong isolation of a TEE from the rest of the computer could enable us to deploy TREs to third-party infrastructure (such as supercomputers or cloud services) or run them on untrusted devices (such as personal laptops).
+
+However, using TEEs is not trivial and requires careful design of policy, compliance checks and investment in hardware.
+Furthermore, though the isolation of a TEE from the rest of the computer is strong, all processes in the TEE must be trusted, so we must think critically about what a TEE does and does not protect you against.
+Here we evaluate the situations where TEEs add value to TREs considering the costs against the benefits for TRE security.
 
 ## Security
 
@@ -72,20 +78,12 @@ A more holistic view of security when handling sensitive data is described by [T
       - overlap with existing controls, won't reduce attack surface (maybe not the right terms here)
       - Possibility to shift trust in a way that makes TCB more complex
 
-### Cost and benefit
+### Cost and Nenefit
 
 - Why not _all_ the security _all_ the time
 
-## TEEs
-
-### Introduction
-
-The attestation process produces a cryptographically verifiable report which proves that software is running in a secure TEE.
-Relying parties are therefore able to assess a TEE before deciding whether to interact with it.
-… attestation report
-
 (sec-security)=
-### Security
+## TEE Security
 
 - What does a TEE do?
   - Confidentiality from host, hypervisor
