@@ -4,7 +4,7 @@ extends:
   - abbreviations.yml
 project:
   id: 6bb2d763-2074-4b2f-ae50-c529d4ff95b4
-  # title: Confidential Computing Capability
+  title: Confidential Computing and TREs
   # description:
   # keywords: []
   # authors: []
@@ -16,6 +16,7 @@ project:
     - format: pdf
       template: curvenote
   toc:
+    - file: index.md
     - file: confidential_computing.md
     - file: support.md
     - file: availability.md
@@ -26,6 +27,6 @@ project:
     - references.bib
 site:
   template: book-theme
-  # options:
-  #   favicon: favicon.ico
-  #   logo: site_logo.png
+  options:
+    logo: static/logo_light.png
+    logo_dark: static/logo_dark.png
