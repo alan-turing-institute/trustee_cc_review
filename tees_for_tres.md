@@ -78,7 +78,7 @@ A more holistic view of security when handling sensitive data is described by [T
       - overlap with existing controls, won't reduce attack surface (maybe not the right terms here)
       - Possibility to shift trust in a way that makes TCB more complex
 
-### Cost and Nenefit
+### Cost and Benefit
 
 - Why not _all_ the security _all_ the time
 
@@ -176,6 +176,44 @@ However, we can consider the "dimensions" of TRE design to make more general rec
   - OpenSAFELY
   - Aridhia
 
+## Roles
+
+:::{glossary}
+TRE Operator
+: Manages {term}`TRE`.
+  For example controlling user access, managing data ingress and egress, enforcing governance.
+
+Infrastructure Operator
+: Manages the underlying infrastructure on which {term}`TRE` is deployed.
+  May be responsible for configuration which enforces TRE security, such as network controls or deploying CVMs.
+
+TRE Developer
+: Builds {term}`TRE Implementation`.
+
+TRE User
+: An person authorised to use a {term}`TRE`.
+:::
+
+## Entities
+
+::: {glossary}
+TRE Project
+: A piece of sensitive work with a single set of governance outlining its rules
+  This could be a research project addressing a particular question, or the curation of an important data set
+
+TRE
+: The environment used by a project, with rules defined by a single governance …
+  A single deployment of a {term}`TRE implementation`
+
+TRE Implementation
+: The software/infrastructure that enables …
+
+TRE Infrastructure
+: The underlying platform on which a {term}`TRE` is build.
+  For example a private, public cloud, a single workstation.
+:::
+
+(sec-recommendations)=
 ## Recommendations
 
 By considering the [design of TREs](#sec-tre-models) and [the scope of TEEs protection](#sec-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
