@@ -91,63 +91,38 @@ A more holistic view of security when handling sensitive data is described by [T
   - Removes the need for trust in host, apart from CPU and firmware
 - What a TEE doesn't do
   - Removes the need to trust code inside the TEE
-  - Enhance network security(?)
   - Protect against other users of the _same_ TEE
+  - Some types of physical-access attack
 - Social engineering aspect
   - Protects against "rogue admin"
   - Does not protect against "rogue user"
 
-:::{important} Key point
-TEEs provide very strong isolation between the TEE and the host.
-Memory encryption, remapping and paging means that other processes on the same host cannot read TEE memory in plain text.
+To assess the value of leveraging confidential computing in a TRE it is necessary to understand specifically what protection TEEs offer (and how those intersect(?) with TREs)
+
+TEEs provide very strong, cryptographic isolation between the enclave and the host.
+Memory encryption and remapping or paging ensure that other processes on the same host cannot read TEE memory in plain text.
 This includes privileged users on the host OS or hypervisor.
 Furthermore, some TEE implementations may protect against physical, hardware-based attacks such as reading memory directly (bypassing the CPU), or malicious code running early in the boot process.
-:::
 
 :::{important} Key point
-Significant use case
-Isolation from hardware operator.
-For example a datacentre, cloud provider.
+use cases
+  Isolation from hardware operator. For example a datacentre, cloud provider.
+  Isolation from other workloads. For example a datacentre, cloud provider.
+  Untrusted user or device. For example banking app on phone
 :::
 
 :::{important} Key point
 TEEs do not provide protection from processes in the TEE.
 Therefore, all software in the TEE must be trusted and forms part of the TCB
+Guest is trusted
 :::
 
-### Requirements
+## TEE Implementation/Requirements
 
-### Hardware
-
-- Cost of using TEEs
-  - Hardware requirements
-  - System configuration
-  - Processes for handling attestation
-
-:::{important} Key point
-Although confidential computing is not new, it has not reached a maturity where all or most devices can be used to provision TEEs.
-For CVM solutions, only the most recent, perhaps two or three generations, of devices will have support.
-Furthermore, as the technology is still evolving, older CPU generations may lack the features, and enhanced security, or more modern processors.
-TEE support is often only available in datacentre CPUs and not present on consumer devices.
-Therefore, deploying a new system or upgrading an existing system could come at considerable expense.
-:::
-
-### Processes
-
-CCC white paper on degrees of confidential computing [@ccc-degrees].
-Simply using confidential guests, without verifying their state should give a high level of confidentiality from the host.
-However, by skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.
-Comparing the state of a TEE against an organisational policy is a key part of establishing trust in a TEE.
-Skipping this, confidential and non-confidential VMs are treated equally.
-Can think of this like taking backups without verifying their integrity or testing recovery.
-
-The two further levels are,
-
-2. verifying the state of the infrastructure (infrastructure level attestation)
-3. workload level
-
-In order to effectively use confidential computing, an organisation must develop _and_ maintain a suitable policy which attestation reports will be measured against.
-There must be processes in place (whether automated or manual) to exclude non-compliant TEEs from handling sensitive workloads.
+- more brief detail, or skip entirely in favour of considerations section
+  - hardware
+  - configuration
+  - infrastructure/processes
 
 (sec-tre-models)=
 ## TRE Models
@@ -220,73 +195,93 @@ By considering the [design of TREs](#sec-tre-models) and [the scope of TEEs prot
 
 ### 1. When strong isolation from the host is required
 
-This is precisely the scope (?) of TEEs.
-For many TRE scenarios, isolation from the host is not a strong benefit.
-For example, where the TRE operator and infrastructure operator are the same organisation and the TRE infrastructure is dedicated (that is, it isn't used for non-sensitive work).
-In contrast to this, when the TRE is hosted on infrastructure _not_ controlled by the TRE operator ensuring this isolation is important,
+Providing a way for compute to be run on an untrusted host, or host with untrusted users, is the central goal of confidential computing.
+This aligns well with many existing TRE scenarios, particularly where TREs are deployed to systems not entirely dedicated to trusted research (for example, local HPC or private cloud), or where a TRE is deployed to a third-party's system.
+Only when the same party holds the {term}`TRE operator` and {term}`infrastructure operator` roles _and_ the {term}`TRE infrastructure` is dedicated
+(that is, it isn't used for non-sensitive work) is isolation from the host not a strong benefit.
 
-- To minimise attack surface (other users on the host)
-- To prevent breach of confidentiality if data is accessed by system administrators
 
-How important this is, will depend on the trust in the infrastructure operator and the guarantees they provide.
+#### 1.a. TRE operator and infrastructure operator are different parties
+
+When the {term}`TRE operator` and {term}`infrastructure operator` roles are not held by the same party, the {term}`TRE infrastructure` is _not_ controlled by the {term}`TRE operator`.
+The {term}`infrastructure operator` will have a high degree of privilege and access to the {term}`TRE infrastructure`, which potentially allows them to observe sensitive processes in breach of TRE governance.
+The cryptographic isolation of a TRE from the {term}`TRE infrastructure` using a TEE ensures that the {term}`infrastructure operator` is not able to access data in use, whether maliciously or accidentically.
+
+Precisely how important this is will depend on the trust in the infrastructure operator and the guarantees they provide.
 For example, large cloud providers make strong statements about their ability to isolate tenant from each other, and from the cloud provider's staff.
-Scenarios where TEEs may be a more appropriate solution are,
+However, even in cases where there is absolute trust in the {term}`infrastructure operator` TREs are still vulnerable to attack from a compromised {term}`TRE infrastructure`.
+Other scenarios where TEEs provide valuable isolation to TREs more appropriate solution are,
 
-- TREs hosted on a private cloud alongside non-TRE workloads
-- Satellite TREs using a shared responsibility model (like FRIDGE deployed on HPC)
-- Federated workflows where ephemeral TREs are deployed within another TRE
+- Satellite TREs using a shared responsibility model (such as [FRIDGE](https://alan-turing-institute.github.io/fridge/) deployed on HPC)
+- Federated research where one {term}`TRE operator` runs a workload or deploys an ephemeral TRE within another TRE.
 
-Another important scenario is for lower-trust, end-user devices or "bring your own compute".
+#### 1.b. TRE infrastructure is not exclusive
+
+When the {term}`TRE infrastructure`is not used exclusively for trusted research, the risk of non-authorised administrators accessing sensitive data (whether accidentally or maliciously) is raised.
+In this scenario, different rules and processes for the administration of sensitive and non-sensitive environments could lead to errors.
+An example of this would be an HPC system which provides a service for both sensitive and non-sensitive workloads.
+This model could be particularly effective on a private cloud, a {term}`TRE project` would be allocated a CVM while non-sensitive work is conducted with conventional VMs.
+
+#### 1.c. Low trust devices
+
+Another possible scenario is low-trust, end-user devices or "bring your own compute".
 As a TEE does not depend on trust in the host operating system or software, you can use a TEE to run trusted computation on an untrusted device.
-For example, individual laptops or institutional servers which are not designed for secure, multi-tenant use.
-This is perhaps closer to the applications of confidential computing outside of trusted research, where a key challenge is running a process on an untrusted machine while ensuring its integrity and confidentiality.
+For example, individual laptops or institutional servers which are not designed for secure, multi-tenant use.[^commericaluse]
+In the extreme, widespread support of TEEs could allow distributed trusted research across untrusted devices, which would currently be far too risky to consider.
+Perhaps this could scale to large pools of workers similarly to how non-sensitive distributed research has been conducted by [Folding@Home](https://foldingathome.org/) or SETI@Home.
 
-In the extreme, widespread support of TEEs could allow distributed (like [Folding@Home](https://foldingathome.org/) or SETI@Home) trusted research across untrusted devices.
+[^commericaluse]: This is perhaps closer to the applications of confidential computing outside of trusted research, where a key challenge is running a process on an untrusted machine while ensuring its integrity and confidentiality.
 
-### 2. When strong isolation between jobs is required
+:::{important} Isolating jobs or users
+TEEs are _not_ necessary for isolating individual jobs or {term}`TRE projects <TRE project>` from each other.
+This may be important in a {term}`TRE implementation` which supports multiple {term}`TRE projects <TRE project>` using the same {term}`TRE infrastructure`.
+In these cases, isolation can be introduced by using VMs.
+Since no {term}`TRE user` has no access to the host or hypervisor, the attacks which TEEs protect against are not viable.
+:::
 
- By adopting workload integration of TEEs [@ccc-degrees] and provisioning TEEs per task or job, each workload can be strongly isolated from each other.
- This would be beneficial in TREs where multiple users/projects share the same host or are able to dispatch work to the same runners (like HPC attached to a TRE).
- For example, an organisation curating multiple sensitive data sets, where access to data is managed on a per-person or per-project basis.
- In such situations, building a TRE for each data set would be expensive and make the legitimate combination of data sets difficult.
- However, it is still important to ensure that data is only accessed by the researchers or teams of researchers who are permitted to use it.
+### 2. When highly sensitive data must be used
 
-### 3. When highly sensitive data must be used
+When dealing with highly-sensitive data, computer security is not the only option for protecting against unauthorised disclosure.
+Instead, in line with the Five Safes framework [@five-safes], a more holistic approach to security should be taken and the data should be modified to reduce disclosure risk if possible (for example pseudononymisation, data minimisation or the use of synthetic or dummy data).
+When highly-sensitive data must be used, however, it is appropriate to reduce risk in other dimensions.
+In these cases, the use of TEEs may be beneficial.
+It would offer most benefit when dealing with data which would encourage high-motivated attackers to launch sophisticated attacks at the infrastructure level.
+For example, compromising the host OS, BIOS or a social engineering attack targeting the {term}`infrastructure operator`.
 
-   Other methods to reduce the risk (such as pseudononymisation, data minimisation or the use of synthetic or dummy data) are not possible
-   Could be, for example with personal data when disclosure of the data would present a risk to the health or life of subjects or highly sensitive, classified material
+## Considerations
 
-<!-- - TEEs add value to TREs (and should be used?) when -->
-<!--   - Strong isolation is required from the host -->
-<!--     - Here an _entire_ TRE can be hosted in one CVM -->
-<!--     - For example shared responsibility -->
-<!--     - Satellite TREs -->
-<!--     - TREs hosted on private cloud, alongside non-sensitive work -->
-<!--     - Federated analysis on TREs -->
-<!--     - Non-trusted devices or BYOC -->
-<!--   - Strong isolation required between jobs -->
-<!--     - For example a multi-user (multi-role might be more descriptive) system -->
-<!--     - One TEE per job -->
-<!--     - Compute shared between multiple TREs/projects -->
-<!--     - Data access is managed by a users' groups (and so attacks between jobs could break confidentiality) -->
-<!--     - Indeed, TEEs could enable more efficient use of resources for multi-role TREs -->
-<!--   - When the data sensitivity justifies stricter security -->
-<!--     - Data which presents a risk to health or life -->
-
-### Cost and value
-
-The above recommendations outline the situations when TEEs add value to a TRE, in terms of the TREs design and usage.
+The [above recommendations](#sec-recommendations) outline the situations when TEEs add value to a TRE, in terms of the TREs design and usage.
 These are based on the discussion of [principles for optimising security](#sec-sec-principles).
 However, the decision of whether to use TEEs must also include a consideration of the costs involved, so that an assessment of the net benefit can be made.
 
 Aspects of the costs (financial and otherwise) of using TEEs are [discussed above](#sec-sec-cost).
 For the integration of TEEs to TREs we highlight the following costs,
 
-#### Capital expense
+### Hardware and Provisioning
 
-For example, investment required in new hardware with confidential computing support.
+Although confidential computing is not new, it has not reached a maturity where all or most devices can be used to provision TEEs.
+For CVM solutions, only the most recent, perhaps two or three generations, of devices will have support.
+Furthermore, as the technology is still evolving, older CPU generations may lack the features, and enhanced security, or more modern processors.
+TEE support is often only available in datacentre CPUs and not present on consumer devices.
+Therefore, provisioning compatible hardware in a new system or existing system could come at considerable expense.
 
-#### Implementation
+In addition to capital investment in hardware, an organisation implementing confidential computing on-premises will need to perform the necessary configuration and setup.
+This may include,
+
+- BIOS (UEFI) configuration
+- Installing a compatible Host OS
+- Host OS configuration
+- Guest OS configuration (for example, building a minimal guest image with necessary tools)
+- Configuring other trusted hardware, such as GPUs or NICs
+
+Example setup guides from [AMD](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors) and [Intel](https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/01/introduction/)
+
+Both costs can be avoided by using a third-party, such as a cloud computing provider, to provide TEEs as a service
+A reduction in upfront expense … in exchange for (likely) larger operational expenses
+
+### Processes
+
+Using TEEs also requires supporting infrastructure for supporting attestation and integrating it into workflows …
 
 The implementation costs can be further split and will likely vary largely depending the TRE design,
 
@@ -295,12 +290,43 @@ The implementation costs can be further split and will likely vary largely depen
 - Developing an attestation policy (@ccc-degrees level 2)
 - Building supporting infrastructure, such as "business logic" for involving attestation reports (@ccc-degrees level 3)
 
-#### Ongoing management
+CCC white paper on degrees of confidential computing [@ccc-degrees].
+Simply using confidential guests, without verifying their state should give a high level of confidentiality from the host.
+However, by skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.
+Comparing the state of a TEE against an organisational policy is a key part of establishing trust in a TEE.
+Skipping this, confidential and non-confidential VMs are treated equally.
+Can think of this like taking backups without verifying their integrity or testing recovery.
+
+The two further levels are,
+
+2. verifying the state of the infrastructure (infrastructure level attestation)
+3. workload level
+
+In order to effectively use confidential computing, an organisation must develop _and_ maintain a suitable policy which attestation reports will be measured against.
+There must be processes in place (whether automated or manual) to exclude non-compliant TEEs from handling sensitive workloads.
+
+- Most likely a remote attestation service ({term}`verifier` role)
+
+
+### Capital expense
+
+For example, investment required in new hardware with confidential computing support.
+
+### Implementation cost
+
+The implementation costs can be further split and will likely vary largely depending the TRE design,
+
+- Software development, for example updating IAC to use TEEs, splitting of trusted and non-trusted code (to mimise what is run on a TEE)
+- Migrating services to TEEs (@ccc-degrees level 1)
+- Developing an attestation policy (@ccc-degrees level 2)
+- Building supporting infrastructure, such as "business logic" for involving attestation reports (@ccc-degrees level 3)
+
+### Ongoing management
 
 Cost of the upkeep associated with maintaining an applying an attestation policy.
 The enforcement of policy can be automated, however, there will unavoidably be a cost in reviewing the policy and keeping it up to date as new hardware is released and if vulnerabilities are discovered in older TEE implementations.
 
-#### Vendor lock in and portability
+### Vendor lock in and portability
 
 Introducing TEE support may involve building on vendor-specific hardware, services and APIs.
 In these cases, the benefits of TEEs must be balanced against the long-term ability to migrate a TRE instance and the short-term potential for other organisations to deploy your TRE in their own context.
