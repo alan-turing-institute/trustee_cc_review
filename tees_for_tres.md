@@ -336,3 +336,51 @@ However, that comes at the cost of significant buy-in with the cloud platform as
 
 Furthermore, attestation reports will contain vendor-specific fields, related to that vendor's suite of confidential computing capabilities.
 Therefore, incorporating new hardware (in particular hardware from a new vendor) or migrating to different hardware will likely require updating attestation policy.
+
+## Conclusion
+
+% TEE summary
+To understand whether TEEs add value to a TRE, it is critical to remember that TEEs protect data in use by cryptographically isolating workloads.
+This is protection against privileged users on the host, and sophisticated attacks aimed at the OS, hypervisor, BIOS.
+Only in situations where attack from the host is a viable risk do TEEs provide a substantial benefit.
+
+% Trust in host
+As the administrators of TREs and the infrastructure they run on have, in principle, access to sensitive data it is common to use policy and training to reduce the risk of unauthorised data access or disclosure.
+It is common to have a high level of trust in the {term}`infrastructure operator`, in which case a TEE will not significantly reduce risk.
+In these cases, while the use of TEEs would reduce the attack surface and make a TRE more secure, the cost and added complexity may not be justified.
+Addressing the more likely risks first …
+
+Perhaps the most common instance where a TEE would add value to a TRE is when the {term}`TRE operator` and {term}`infrastructure operator` are different parties.
+This could be a TRE hosted on a public cloud, a TRE hosted by a third-party contractor, or a satellite TRE.
+
+% New models of TRE and trusted research
+More excitingly, TEEs could open new models of TRE and new approaches to trusted research where untrusted devices are targeted.
+Without confidential computing, we need to ensure a host system is trustworthy and secure to be used.
+However, as trust in a TEE does not depend on trust in the host it is possible, in principle, to run trusted workloads on …
+The use of TEEs could then widen access to TREs and make deploying TREs easier.
+This idea is already being explored by the [ManaTEE project](https://manatee-project.github.io/manatee/).
+It would also be possible to distribute trusted research to end user devices, which could be applied to problems which scale well to large numbers of workers, or to participants contributing to research by running … locally their own data
+This would be dependent on confidential computing capability becoming common on consumer devices; currently in computer hardware it is exclusive to datacentre/enterprise.
+
+In summary, the situations when we recommend the use of TEEs to enhance TRE security are,
+
+1. Strong isolation from the host
+   1. Third party system (TRE hosted by another org, public cloud)
+   1. Multi-use system (private cloud _etc._)
+   1. Bring-your-own-compute (TREs on laptops, mesh TREs)
+1. Extreme data sensitivity
+
+Beyond the effective and appropriate use of TEEs within a {term}`TRE implementation` there are a number of key practical considerations.
+
+% Readiness of hardware/adoption
+Although CC technology is not new, it is not yet a standard feature across architectures or vendors suite of offerings.
+Currently, you can expect to only find CC support in the latest few generations of server/datacentre CPUs.
+Integration of devices into TEEs is not generally solved, although the latest generations of GPUs from Nvidia and AMD can be incorporated into a TEE.
+For many, it may therefore not be possible to build on TEEs without a large investment in new hardware.
+And so, while TEEs can, in some situations, significantly improve TRE security it is possible that time spent on integrating TEEs may be wasted as access to supported systems will be low.
+
+% Key considerations
+Furthermore, making the most of TEEs is not simply a case of enabling secure virtualisation.
+@ccc-degrees outlines levels of adoption of confidential computing, emphasising the importance of [attestation](#sec-cc-attestation) in verifying that a TEE is trustworthy, and further the integration of attestation into workload-level logic.
+Even just handling a single attestation report requires the {term}`relying party` to set up related infrastructure such as an attestation policy and a mechanism for reacting to a report.
+This aspect should not be ignored, and could become a significant part of the task of incorporating TEEs into a {term}`TRE implementation`, especially when integrated to a high degress such as removing not-compliant nodes from a pool or requiring passing attestation before each job is launched.
