@@ -226,11 +226,11 @@ This model could be particularly effective on a private cloud, a {term}`TRE proj
 
 Another possible scenario is low-trust, end-user devices or "bring your own compute".
 As a TEE does not depend on trust in the host operating system or software, you can use a TEE to run trusted computation on an untrusted device.
-For example, individual laptops or institutional servers which are not designed for secure, multi-tenant use.[^commericaluse]
+For example, individual laptops or institutional servers which are not designed for secure, multi-tenant use.[^commercial-use]
 In the extreme, widespread support of TEEs could allow distributed trusted research across untrusted devices, which would currently be far too risky to consider.
 Perhaps this could scale to large pools of workers similarly to how non-sensitive distributed research has been conducted by [Folding@Home](https://foldingathome.org/) or SETI@Home.
 
-[^commericaluse]: This is perhaps closer to the applications of confidential computing outside of trusted research, where a key challenge is running a process on an untrusted machine while ensuring its integrity and confidentiality.
+[^commercial-use]: This is perhaps closer to the applications of confidential computing outside of trusted research, where a key challenge is running a process on an untrusted machine while ensuring its integrity and confidentiality.
 
 :::{important} Isolating jobs or users
 TEEs are _not_ necessary for isolating individual jobs or {term}`TRE projects <TRE project>` from each other.
@@ -248,6 +248,7 @@ In these cases, the use of TEEs may be beneficial.
 It would offer most benefit when dealing with data which would encourage high-motivated attackers to launch sophisticated attacks at the infrastructure level.
 For example, compromising the host OS, BIOS or a social engineering attack targeting the {term}`infrastructure operator`.
 
+(sec-considerations)=
 ## Considerations
 
 The [above recommendations](#sec-recommendations) outline the situations when TEEs add value to a TRE, in terms of the TREs design and usage.
@@ -257,15 +258,22 @@ However, the decision of whether to use TEEs must also include a consideration o
 Aspects of the costs (financial and otherwise) of using TEEs are [discussed above](#sec-sec-cost).
 For the integration of TEEs to TREs we highlight the following costs,
 
-### Hardware and Provisioning
+(sec-considerations-hardware)=
+### Hardware support and availability
 
 Although confidential computing is not new, it has not reached a maturity where all or most devices can be used to provision TEEs.
 For CVM solutions, only the most recent, perhaps two or three generations, of devices will have support.
 Furthermore, as the technology is still evolving, older CPU generations may lack the features, and enhanced security, or more modern processors.
 TEE support is often only available in datacentre CPUs and not present on consumer devices.
-Therefore, provisioning compatible hardware in a new system or existing system could come at considerable expense.
+
+Integration of devices into TEEs is not generally solved, although the latest generations of GPUs from Nvidia and AMD can be incorporated into a TEE.
+For many, it may therefore not be possible to build on TEEs without a large investment in new hardware.
+
+(sec-considerations-configuration)=
+### Configuration
 
 In addition to capital investment in hardware, an organisation implementing confidential computing on-premises will need to perform the necessary configuration and setup.
+Vendor guides give an impression of the work involved, for example these setup guides from [AMD](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors) and [Intel](https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/01/introduction/).
 This may include,
 
 - BIOS (UEFI) configuration
@@ -274,54 +282,36 @@ This may include,
 - Guest OS configuration (for example, building a minimal guest image with necessary tools)
 - Configuring other trusted hardware, such as GPUs or NICs
 
-Example setup guides from [AMD](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors) and [Intel](https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/01/introduction/)
-
 Both costs can be avoided by using a third-party, such as a cloud computing provider, to provide TEEs as a service
 A reduction in upfront expense … in exchange for (likely) larger operational expenses
 
-### Processes
+### Implementation
 
-Using TEEs also requires supporting infrastructure for supporting attestation and integrating it into workflows …
+Depending on the TEE implementation, and the design of a {term}`TRE implementation`, this could be a simple or complicated change.
+In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to confidential containers.
+However, in other cases it may require significant code changes like the splitting of confidential and non-confidential code, building on CC APIs, or major architectural changes to the {term}`TRE implementation`.
+TRE builders should carefully consider how and where to incorporate TEEs in their design and the development effort required.
 
-The implementation costs can be further split and will likely vary largely depending the TRE design,
+(sec-considerations-infra)=
+### Attestation infrastructure
 
-- Software development, for example updating IAC to use TEEs, splitting of trusted and non-trusted code (to mimise what is run on a TEE)
-- Migrating services to TEEs (@ccc-degrees level 1)
-- Developing an attestation policy (@ccc-degrees level 2)
-- Building supporting infrastructure, such as "business logic" for involving attestation reports (@ccc-degrees level 3)
+While simply enabling secure virtualisation, without verifying their state should give a high level of confidentiality from the host,
+making the most of TEEs requires more effort.
+By skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.[^performative-security]
+@ccc-degrees outlines levels of adoption of confidential computing, emphasising the importance of [attestation](#sec-cc-attestation) in verifying that a TEE is trustworthy, and further the integration of attestation into workload-level logic.
 
-CCC white paper on degrees of confidential computing [@ccc-degrees].
-Simply using confidential guests, without verifying their state should give a high level of confidentiality from the host.
-However, by skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.
-Comparing the state of a TEE against an organisational policy is a key part of establishing trust in a TEE.
-Skipping this, confidential and non-confidential VMs are treated equally.
-Can think of this like taking backups without verifying their integrity or testing recovery.
+In order to effectively use confidential computing, a suitable policy must developed _and_ maintained which attestation reports will be measured against.
+While it would be possible for attestation reports to be inspected manually, it is more likely that a {term}`relying party` will establish infrastructure to handle reports.
+Furthermore, processes to react to reports, for example excluding non-compliant TEEs from running sensitive workloads, must be implemented.
+It would be best for these processes to be automated, which adds to the complexity of the attestation infrastructure.
+This aspect could become a significant part of the task of incorporating TEEs into a {term}`TRE implementation`, especially if attestation is conducted on a per-job basis as discussed in TEE adoption level 3 [@ccc-degrees].
 
-The two further levels are,
+A number of projects are beginning to build open source tools for managing TEEs ([VirTEE](https://virtee.io/), [Islet](https://github.com/islet-project/)) handling attestation ([VERASION](https://github.com/veraison)) and abstracting TEEs for containers and applications ([dstack](https://dstack.org/), [Ernax](https://enarx.dev/)).
+As these tools mature the use of TEEs will become easier and more accessible.
 
-2. verifying the state of the infrastructure (infrastructure level attestation)
-3. workload level
+[^performative-security]: Using TEEs while ignoring attestation reports can therefore be seen as "performative security", like taking backup snapshots without verifying their integrity or testing recovery.
 
-In order to effectively use confidential computing, an organisation must develop _and_ maintain a suitable policy which attestation reports will be measured against.
-There must be processes in place (whether automated or manual) to exclude non-compliant TEEs from handling sensitive workloads.
-
-- Most likely a remote attestation service ({term}`verifier` role)
-
-
-### Capital expense
-
-For example, investment required in new hardware with confidential computing support.
-
-### Implementation cost
-
-The implementation costs can be further split and will likely vary largely depending the TRE design,
-
-- Software development, for example updating IAC to use TEEs, splitting of trusted and non-trusted code (to mimise what is run on a TEE)
-- Migrating services to TEEs (@ccc-degrees level 1)
-- Developing an attestation policy (@ccc-degrees level 2)
-- Building supporting infrastructure, such as "business logic" for involving attestation reports (@ccc-degrees level 3)
-
-### Ongoing management
+### Ongoing management and support
 
 Cost of the upkeep associated with maintaining an applying an attestation policy.
 The enforcement of policy can be automated, however, there will unavoidably be a cost in reviewing the policy and keeping it up to date as new hardware is released and if vulnerabilities are discovered in older TEE implementations.
@@ -370,19 +360,8 @@ In summary, the situations when we recommend the use of TEEs to enhance TRE secu
    1. Bring-your-own-compute (TREs on laptops, mesh TREs)
 1. Extreme data sensitivity
 
-Beyond the effective and appropriate use of TEEs within a {term}`TRE implementation` there are a number of key practical considerations.
-
-% Readiness of hardware/adoption
-Although CC technology is not new, it is not yet a standard feature across architectures or vendors suite of offerings.
-Currently, you can expect to only find CC support in the latest few generations of server/datacentre CPUs.
-Integration of devices into TEEs is not generally solved, although the latest generations of GPUs from Nvidia and AMD can be incorporated into a TEE.
-For many, it may therefore not be possible to build on TEEs without a large investment in new hardware.
-And so, while TEEs can, in some situations, significantly improve TRE security it is possible that time spent on integrating TEEs may be wasted as access to supported systems will be low.
-
-% Key considerations
-Furthermore, making the most of TEEs is not simply a case of enabling secure virtualisation.
-@ccc-degrees outlines levels of adoption of confidential computing, emphasising the importance of [attestation](#sec-cc-attestation) in verifying that a TEE is trustworthy, and further the integration of attestation into workload-level logic.
-Even just handling a single attestation report requires the {term}`relying party` to set up related infrastructure such as an attestation policy and a mechanism for reacting to a report.
-This aspect should not be ignored, and could become a significant part of the task of incorporating TEEs into a {term}`TRE implementation`, especially when integrated to a high degrees such as removing not-compliant nodes from a pool or requiring passing attestation before each job is launched.
-A number of projects are beginning to build open source tools for managing TEEs ([VirTEE](https://virtee.io/), [Islet](https://github.com/islet-project/)) handling attestation ([VERASION](https://github.com/veraison)) and abstracting TEEs for containers and applications ([dstack](https://dstack.org/), [Ernax](https://enarx.dev/)).
-As these tools mature the use of TEEs will become easier and more accessible.
+Beyond the effective and appropriate use of TEEs within a {term}`TRE implementation` there are a number of [key practical considerations](#sec-considerations).
+Most importantly, TEEs are not a simple "drop-in" solution and require investment in [hardware](#sec-considerations-hardware), [configuration](#sec-considerations-configuration) and building the [supporting infrastructure to handle attestation reports](#sec-considerations-infra).
+Furthermore, support for TEEs is far from universal and requires recent hardware and modern BIOS and OS.
+For many organisations this will mean purchasing and provisioning new systems.
+Therefore, while TEEs can, in some situations, significantly improve TRE security it is possible that time spent on integrating TEEs may be wasted as access to supported systems will be low.
