@@ -152,7 +152,32 @@ However, we can consider the "dimensions" of TRE design to make more general rec
   - OpenSAFELY
   - Aridhia
 
-## Roles
+## Roles and entities
+
+The language used to describe TRE systems varies.
+To help clarify the [recommendations](#sec-recommendations) the following roles and entity definitions are used.
+
+### Entities
+
+::: {glossary}
+TRE Project
+: A piece of sensitive work with a single set of governance outlining its rules.
+  This could be a research project addressing a particular question, or the curation of an important data set.
+
+TRE Implementation
+: The software/infrastructure that enables a {term}`TRE` enforcing (aspects of) security controls and governance rules,
+  while providing an effective workspace for research.
+
+TRE
+: The environment used for the purpose of a {term}`TRE project`, with rules for usage defined by a governance document.
+  This will often comprise of a single deployment of a {term}`TRE implementation`, governance, processes and support.
+
+TRE Infrastructure
+: The underlying platform on which a {term}`TRE` is deployed.
+  For example, private or public cloud, an on-premise server, or an HPC cluster.
+:::
+
+### Roles
 
 :::{glossary}
 TRE Operator
@@ -167,26 +192,7 @@ TRE Developer
 : Builds {term}`TRE Implementation`.
 
 TRE User
-: An person authorised to use a {term}`TRE`.
-:::
-
-## Entities
-
-::: {glossary}
-TRE Project
-: A piece of sensitive work with a single set of governance outlining its rules
-  This could be a research project addressing a particular question, or the curation of an important data set
-
-TRE
-: The environment used by a project, with rules defined by a single governance …
-  A single deployment of a {term}`TRE implementation`
-
-TRE Implementation
-: The software/infrastructure that enables …
-
-TRE Infrastructure
-: The underlying platform on which a {term}`TRE` is build.
-  For example a private, public cloud, a single workstation.
+: Authorised to use a {term}`TRE`.
 :::
 
 (sec-recommendations)=
