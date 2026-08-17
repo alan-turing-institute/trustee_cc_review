@@ -62,6 +62,7 @@ Evidence is verified by the CPU vendor, or entities on a chain of trust leading 
 :label: fig-tcb-and-rot
 :::{image} https://mermaid.ink/img/pako:eNp9lE1zmzAQhv8Ko1yph2-Mekps59ZpZ5JeWjodBQmbCSBGEo5dj_97VxLgmMblgvbRfrxaLZxQwSlDGL3UvHjNW8cpeN03rXRCbRiKt4L33W_FGA40vPgMpuSleiOCWYsSRfSKtVS_IOxnjp43G4e01HlePeTo1zz1jks1z-1bc3fsmNhXkgtrc7VjAhLqkKmw61BR7ZmQQ24Ig20uR7-vT8PGoElD2OtbJXqpGDUAKjcdb1mr5AcSBb-lsKxEo0VAwnFpjtpUheC6u5OoouvBafXt-0T2IIgLCwfjWimU1Ycggpq8gnPl8NIxuo1n3hY1kXLNSqcmL6wGOXWN7x7N40ol-Cv79FZRtcNed_g8uOtbsf4jMB24IlD6CugSphf_KRF1hwHgu8w8U8VpiOzqGpvqH3Ct4T3WGsY7syqi9f1jdH_7oOOIjGEj11M6Z3A_czTd6Izbu5pRre4yU1ZfmKabh-VtfXZQL2ETn-b-3z3zDbzHyEUNEw2pKHzJJz03OQKfBkYPw5KykvQ1zEvensGV9Io_HdsCYUjAXAT93e4QLkktweo7aA1bV2QrSDPRjrQ_OG_GEEYrxcUX--swfxDjgvAJHRD2s3iRRoHv-4GXeHGUuuiIcJAGCy-L_WUUBomf-tnZRX9MTm8RZ8sk8cIgjoIwTLLERVuhDzNUF9BtJlYcjgzZ4_NfPl2j3w?type=png
 :::
+A block diagram showing an example of a TEE implementation, showing the TCB, the untrusted host resources, and the hardware root of trust.
 % :::{mermaid}
 % block
 %   columns 3
@@ -105,7 +106,6 @@ Evidence is verified by the CPU vendor, or entities on a chain of trust leading 
 % class hypervisor untrusted
 % class other untrusted
 % :::
-A block diagram showing an example of a TEE implementation, showing the TCB, the untrusted host resources, and the hardware root of trust.
 ::::
 
 (sec-cc-attestation)=
