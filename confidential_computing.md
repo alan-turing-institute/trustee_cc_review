@@ -20,6 +20,7 @@ Confidential computing is achieved by creating a hardware-based, attestable TEE.
 Attestation, proves that a TEE is correctly configured and has not been tampered with.
 Data in use, and code being executing in a TEE is encrypted and may not be read or modified by other processes on the same computer.
 
+(sec-tees)=
 ## Trusted Execution Environments
 
 A TEE is a reserved portion of hardware (CPU, memory and possibly GPU) that is cryptographically segregated from the rest of the system (the host, and any other TEEs).
@@ -28,7 +29,7 @@ TEEs are the enabling technology for confidential computing [@ccc-terminology].
 They operate by selectively encrypting sections of memory belonging to TEEs with enclave-unique keys.
 This is done by a trusted {term}`secure processor` which ensure encrypted memory can only be read as plain text by the correct TEE.
 Implementations vary as to how this is achieved but generally involve some kind of memory address virtualisation or remapping in addition to encryption.
-A TEE can prove the integrity of its TCB though an [attestation](#sec-cc-attestation) process, so its users can be informed and access whether to trust it.
+A TEE can prove the integrity of its TCB though an [attestation](#sec-cc-attestation) process, so its users can make an informed decision whether to trust it or not.
 
 In any computer system the TCB defines of all of the components (hardware, software and firmware) that play a role in providing the required security.
 The term derives from the fact that we must trust these components perform their intended role as we expect,

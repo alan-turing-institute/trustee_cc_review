@@ -27,6 +27,7 @@ However, using TEEs is not trivial and requires careful design of policy, compli
 Furthermore, though the isolation of a TEE from the rest of the computer is strong, all processes in the TEE must be trusted, so we must think critically about what a TEE does and does not protect you against.
 Here we evaluate the situations where TEEs add value to TREs considering the costs against the benefits for TRE security.
 
+<!--
 ## Security
 
 (sec-sec-principles)=
@@ -82,6 +83,12 @@ A more holistic view of security when handling sensitive data is described by [T
 
 - Why not _all_ the security _all_ the time
 
+:::
+-->
+
+:::{embed} #sec-tees
+:::
+
 (sec-security)=
 ## TEE Security
 
@@ -115,14 +122,8 @@ use cases
 TEEs do not provide protection from processes in the TEE.
 Therefore, all software in the TEE must be trusted and forms part of the TCB
 Guest is trusted
-:::
 
-## TEE Implementation/Requirements
-
-- more brief detail, or skip entirely in favour of considerations section
-  - hardware
-  - configuration
-  - infrastructure/processes
+Therefore, if you plan to deploy large portions of TRE code inside TEEs, for example "workspace" VMs _all_ software on these becomes part of the TCB.
 
 (sec-tre-models)=
 ## TRE Models
