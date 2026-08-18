@@ -27,10 +27,6 @@ However, using TEEs is not trivial and requires careful design of policy, compli
 Furthermore, though the isolation of a TEE from the rest of the computer is strong, all processes in the TEE must be trusted, so we must think critically about what a TEE does and does not protect you against.
 Here we evaluate the situations where TEEs add value to TREs considering the costs against the benefits for TRE security.
 
-<!--
-:::
--->
-
 :::{embed} #sec-cc-tees
 :::
 
@@ -247,7 +243,7 @@ As these tools mature the use of TEEs will become easier and more accessible.
 Cost of the upkeep associated with maintaining an applying an attestation policy.
 The enforcement of policy can be automated, however, there will unavoidably be a cost in reviewing the policy and keeping it up to date as new hardware is released and if vulnerabilities are discovered in older TEE implementations.
 
-### Vendor lock in and portability
+### Vendor lock-in and portability
 
 Introducing TEE support may involve building on vendor-specific hardware, services and APIs.
 In these cases, the benefits of TEEs must be balanced against the long-term ability to migrate a TRE instance and the short-term potential for other organisations to deploy your TRE in their own context.
