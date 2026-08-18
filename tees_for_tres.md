@@ -108,8 +108,8 @@ For example, large cloud providers make strong statements about their ability to
 However, even in cases where there is absolute trust in the {term}`infrastructure operator` TREs are still vulnerable to attack from a compromised {term}`TRE infrastructure`.
 Other scenarios where TEEs provide valuable isolation to TREs more appropriate solution are,
 
-- Satellite TREs using a shared responsibility model (such as [FRIDGE](https://alan-turing-institute.github.io/fridge/) deployed on HPC)
-- Federated research where one {term}`TRE operator` runs a workload or deploys an ephemeral TRE within another TRE.
+- Satellite TREs using a shared responsibility model (such as [FRIDGE](xref:fridge) deployed on HPC)
+- Federated research where one {term}`TRE operator` runs a workload or deploys an ephemeral TRE within another TRE
 
 #### 1.b. TRE infrastructure is not exclusive
 

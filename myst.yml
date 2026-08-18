@@ -10,6 +10,8 @@ project:
   # authors: []
   github: https://github.com/alan-turing-institute/trustee_cc_review
   # To autogenerate a Table of Contents, run "myst init --write-toc"
+  references:
+    fridge: https://alan-turing-institute.github.io/fridge/
   exclude:
     - README.md
   exports:
