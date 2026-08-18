@@ -179,6 +179,7 @@ This would make an in-depth security audit more feasible.
 Developing for an enclave TEE will require calling CC APIs.
 Translating an existing application would require splitting trusted routines and adding steps to create, attest and use enclaves to the untrusted part.
 
+(sec-ccs-coco)=
 ### Confidential Containers
 
 A more recent and promising approach to confidential computing is confidential containers [@ccc-terminology].

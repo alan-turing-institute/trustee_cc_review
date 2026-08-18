@@ -30,6 +30,7 @@ Here we evaluate the situations where TEEs add value to TREs considering the cos
 :::{embed} #sec-cc-tees
 :::
 
+(sec-tre-security)=
 :::{embed} #sec-cc-security
 :::
 
@@ -203,21 +204,17 @@ This may include,
 Both costs can be avoided by using a third-party, such as a cloud computing provider, to provide TEEs as a service
 A reduction in upfront expense … in exchange for (likely) larger operational expenses
 
-### TRE design
+### TRE design and implementation cost
 
-- TCB size
-- Moving large amounts of a TRE into a TEE may not produce much benefit. All code moved into a TEE becomes part of the TCB. Vulnerabilities in the TCB will compromise security, irrespective of the secure TEE boundary
-- Therefore, if you plan to deploy large portions of TRE code inside TEEs, for example "workspace" VMs _all_ software on these becomes part of the TCB.
-- Consider for example, an on-premises TRE consisting of monolithic VMs which enforce network security at OS level. A privelege escallation vulnerability would still allow a user to change firewall rules and send data outside of the TRE (bad example… not worth explaining)
-- TEEs _do not_ remove the need to trust software and users inside the enclave
-- (perhaps explain put in TEE security section above, then add TRE context here)
-
-### Implementation cost
-
-Depending on the TEE implementation, and the design of a {term}`TRE implementation`, this could be a simple or complicated change.
-In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to confidential containers.
+Incorporating TEEs into a {term}`TRE implementation` is not a trivial change.
+TRE builders should take care to consider how and where to use confidential computing to protect sensitive workloads inside a {term}`TRE`, and the development effort this requires.
+In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to [confidential containers](#sec-ccs-coco).
 However, in other cases it may require significant code changes like the splitting of confidential and non-confidential code, building on CC APIs, or major architectural changes to the {term}`TRE implementation`.
-TRE builders should carefully consider how and where to incorporate TEEs in their design and the development effort required.
+
+A key consideration is how the use of a TEE affects the size of the [TCB](#tip-tcb).
+Moving large, monolithic TRE components into a TEE may not produce much benefit.
+As [explained above](#sec-tre-security), all code moved into a TEE remains part of the [TCB](#tip-tcb) and vulnerabilities in the [TCB](#tip-tcb) will compromise security, irrespective of the secure TEE boundary.
+For example, moving large "workspace VMs" to CVMs, while providing isolation from the host, will not provide any mitigation for vulnerabilities in the workspace OS or software.
 
 (sec-considerations-infra)=
 ### Attestation infrastructure
