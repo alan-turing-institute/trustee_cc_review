@@ -28,102 +28,21 @@ Furthermore, though the isolation of a TEE from the rest of the computer is stro
 Here we evaluate the situations where TEEs add value to TREs considering the costs against the benefits for TRE security.
 
 <!--
-## Security
+:::
+-->
 
-(sec-sec-principles)=
-### Principles
-
-- High level coverage of security concepts
-  - Attack Surface
-  - Trusted Compute base
-  - Types of attack (including social engineering)
-- Security principles
-  - Minimise attack surface
-  - Minimise trusted compute base
-
-:::{important} Key point
-The TCB is all of the components of a computer system responsible for enforcing security.
-A principle of computer security is to minimise the size of the TCB, to reduce potential routes for attacks and make auditing more managable.
-As all software inside a TEE may have access to sensitive data, it must be considered part of the TCB
+:::{embed} #sec-cc-tees
 :::
 
-- Non technical
-  - Using policy/process as cover for missing technical controls
-  - Training
-  - Good data practice, minimising data, psuedonymisation, use of synthetic data
-  - When a process is cheaper/more efficient than a technical implementation
-  - Security in depth
+:::{embed} #sec-cc-security
+:::
 
-:::{important} Key point
+:::{important} TRE security
 In TREs, it is appropriate to use non-technical controls to build trust and ensure security.
 There are many options available to manage risk and the use of a TRE does not mean that other strategies can be neglected or are no longer needed.
 This is especially true in cases where technical solutions are impractical or complex.
 A more holistic view of security when handling sensitive data is described by [The Five Safes](https://ukdataservice.ac.uk/help/secure-lab/what-is-the-five-safes-framework/)
 :::
-
-(sec-sec-cost)=
-### Security cost
-
-- The cost of increased security
-  - Deployment effort
-  - Upkeep/management effort (increased complexity, specialist skills)
-  - Encouraging workarounds or shadow IT
-  - Vendor lock-in and portability
-
-- Conclusion
-  - Should consider the benefit of additional security against the costs
-  - Are there other ways to achieve this?
-  - May not be worth it when
-    - Cost is very high
-    - The benefit is minimal
-      - overlap with existing controls, won't reduce attack surface (maybe not the right terms here)
-      - Possibility to shift trust in a way that makes TCB more complex
-
-### Cost and Benefit
-
-- Why not _all_ the security _all_ the time
-
-:::
--->
-
-:::{embed} #sec-tees
-:::
-
-(sec-security)=
-## TEE Security
-
-- What does a TEE do?
-  - Confidentiality from host, hypervisor
-  - Confidentiality from _other_ TEEs
-  - Removes the need for trust in host, apart from CPU and firmware
-- What a TEE doesn't do
-  - Removes the need to trust code inside the TEE
-  - Protect against other users of the _same_ TEE
-  - Some types of physical-access attack
-- Social engineering aspect
-  - Protects against "rogue admin"
-  - Does not protect against "rogue user"
-
-To assess the value of leveraging confidential computing in a TRE it is necessary to understand specifically what protection TEEs offer (and how those intersect(?) with TREs)
-
-TEEs provide very strong, cryptographic isolation between the enclave and the host.
-Memory encryption and remapping or paging ensure that other processes on the same host cannot read TEE memory in plain text.
-This includes privileged users on the host OS or hypervisor.
-Furthermore, some TEE implementations may protect against physical, hardware-based attacks such as reading memory directly (bypassing the CPU), or malicious code running early in the boot process.
-
-:::{important} Key point
-use cases
-  Isolation from hardware operator. For example a datacentre, cloud provider.
-  Isolation from other workloads. For example a datacentre, cloud provider.
-  Untrusted user or device. For example banking app on phone
-:::
-
-:::{important} Key point
-TEEs do not provide protection from processes in the TEE.
-Therefore, all software in the TEE must be trusted and forms part of the TCB
-Guest is trusted
-
-Therefore, if you plan to deploy large portions of TRE code inside TEEs, for example "workspace" VMs _all_ software on these becomes part of the TCB.
 
 (sec-tre-models)=
 ## TRE Models
@@ -198,7 +117,7 @@ TRE User
 (sec-recommendations)=
 ## Recommendations
 
-By considering the [design of TREs](#sec-tre-models) and [the scope of TEEs protection](#sec-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
+By considering the [design of TREs](#sec-tre-models) and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
 
 ### 1. When strong isolation from the host is required
 
@@ -259,11 +178,7 @@ For example, compromising the host OS, BIOS or a social engineering attack targe
 ## Considerations
 
 The [above recommendations](#sec-recommendations) outline the situations when TEEs add value to a TRE, in terms of the TREs design and usage.
-These are based on the discussion of [principles for optimising security](#sec-sec-principles).
 However, the decision of whether to use TEEs must also include a consideration of the costs involved, so that an assessment of the net benefit can be made.
-
-Aspects of the costs (financial and otherwise) of using TEEs are [discussed above](#sec-sec-cost).
-For the integration of TEEs to TREs we highlight the following costs,
 
 (sec-considerations-hardware)=
 ### Hardware support and availability
@@ -292,7 +207,16 @@ This may include,
 Both costs can be avoided by using a third-party, such as a cloud computing provider, to provide TEEs as a service
 A reduction in upfront expense … in exchange for (likely) larger operational expenses
 
-### Implementation
+### TRE design
+
+- TCB size
+- Moving large amounts of a TRE into a TEE may not produce much benefit. All code moved into a TEE becomes part of the TCB. Vulnerabilities in the TCB will compromise security, irrespective of the secure TEE boundary
+- Therefore, if you plan to deploy large portions of TRE code inside TEEs, for example "workspace" VMs _all_ software on these becomes part of the TCB.
+- Consider for example, an on-premises TRE consisting of monolithic VMs which enforce network security at OS level. A privelege escallation vulnerability would still allow a user to change firewall rules and send data outside of the TRE (bad example… not worth explaining)
+- TEEs _do not_ remove the need to trust software and users inside the enclave
+- (perhaps explain put in TEE security section above, then add TRE context here)
+
+### Implementation cost
 
 Depending on the TEE implementation, and the design of a {term}`TRE implementation`, this could be a simple or complicated change.
 In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to confidential containers.

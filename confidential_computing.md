@@ -20,31 +20,21 @@ Confidential computing is achieved by creating a hardware-based, attestable TEE.
 Attestation, proves that a TEE is correctly configured and has not been tampered with.
 Data in use, and code being executing in a TEE is encrypted and may not be read or modified by other processes on the same computer.
 
-(sec-tees)=
+(sec-cc-tees)=
 ## Trusted Execution Environments
 
 A TEE is a reserved portion of hardware (CPU, memory and possibly GPU) that is cryptographically segregated from the rest of the system (the host, and any other TEEs).
 The contents of a TEE are unable to be read, or modified by any processes outside of the TEE, including those running on the same host.
 TEEs are the enabling technology for confidential computing [@ccc-terminology].
-They operate by selectively encrypting sections of memory belonging to TEEs with enclave-unique keys.
-This is done by a trusted {term}`secure processor` which ensure encrypted memory can only be read as plain text by the correct TEE.
+They operate by selectively encrypting sections of memory belonging to TEEs with enclave-unique keys, which ensure encrypted memory can only be read as plain text by the correct TEE.
 Implementations vary as to how this is achieved but generally involve some kind of memory address virtualisation or remapping in addition to encryption.
-A TEE can prove the integrity of its TCB though an [attestation](#sec-cc-attestation) process, so its users can make an informed decision whether to trust it or not.
+A TEE can prove its state (and hence that it has been configured correctly) though an [attestation](#sec-cc-attestation) process, so its users can make an informed decision whether to trust it or not.
 
-In any computer system the TCB defines of all of the components (hardware, software and firmware) that play a role in providing the required security.
-The term derives from the fact that we must trust these components perform their intended role as we expect,
-as a flaw on any one member of the TCB could mean the security of the entire system is compromised.
-A general principle is to minimise the size of the TCB, in other words, reducing the number of critical component for security.
-This simplifies management and monitoring of the TCB and presents fewer routes for a malicious attack.
-
-The TCB of a TEE can vary based on the [design of the TEE](#sec-ccs-cc-archetypes).
-However, it will always exclude the host OS and any hypervisor as the TEE is cryptographically segregated from these by definition.
-Although the host CPU, and its firmware and microcode, are critical to the security of a TEE, they are not considered part of the TCB.
-Instead, they may be considered the "hardware root of trust" as CPU routines,
-and the ability of a hardware manufacturer to validate genuine hardware,
-play a critical role in the [attestation](#sec-cc-attestation) process.
-The CPU and CPU manufacturer are therefore the root of the chain of trust for the entire TEE and ultimately you must trust these organisation and their products.
-An overview of this is shown in [](#fig-tcb-and-rot).
+Both memory encryption and gathering evidence for attestation are performed by a trusted {term}`secure processor`.
+This is a section of the CPU dedicated to confidential computing functions and enforcing the security of TEEs.
+It provides an API for managing the TEE platform and enclaves for example, reporting firmware versions, creating an enclave, generating attestation evidence.
+However, it cannot be arbitrarily controlled by the host to bypass enclave isolation for instance, decrypting TEE memory outside of the enclave or returning enclave encryption keys.
+The secure processor therefore plays a critical role in the operation of a TEE.
 
 :::{important} Trust
 You must have ultimate and explicit trust is in the CPU vendor.
@@ -57,6 +47,47 @@ You must trust that,
 The hardware root of trust is the CPU, which produces evidence.
 Evidence is verified by the CPU vendor, or entities on a chain of trust leading back to the vendor.
 :::
+
+(sec-cc-security)=
+## TEE security
+
+TEEs provide very strong, cryptographic isolation between the enclave and the host.
+Memory encryption and address remapping ensure TEE processes are confidential and their memory cannot be read in plain text outside of the enclave.
+This confidentiality includes privileged users on the host OS or hypervisor.
+
+A TEE implementation may also protect against some physical, hardware-based attacks such as reading memory directly (bypassing the CPU), or malicious code running early in the boot process.
+Furthermore, as the lifecycle of a TEE and the attestation process do not depend on trust in the host, a TEE remains secure even in the case of the host OS, hypervisor, software, drivers or firmware being compromised.
+
+:::{important} Key message
+In summary, TEEs 
+
+- Remove the need to trust many software and hardware components of a host, and the operator of that host
+- Ensure processes are confidential even when security vulnerabilities are exploited on the host
+:::
+
+:::{note} TEE use cases
+:class: dropdown
+TEE development has in part been driven by commercial use cases where a service wants to keep their process confidential from an untrusted, potentially insecure end-user device.
+This could be, for example, a banking application running on a phone, or a video streaming service for copyrighted material.
+:::
+
+(tip-tcb)=
+:::{tip} Trusted compute base
+:class: dropdown
+The TCB of a computer system is the set of all components (hardware, software and firmware) that play a role in providing the required security.
+A flaw on any member of the TCB could mean the security of the entire system is compromised.
+
+A principle of computer security is to minimise the size of the TCB, in other words, reducing the number of critical component for security.
+This reduces the attack surface and simplifies the monitoring and maintenance of security-critical components.
+:::
+
+The [TCB](#tip-tcb) of a TEE can vary based on the [design of the TEE](#sec-ccs-cc-archetypes).
+However, it will always exclude the host OS and any hypervisor as the TEE is cryptographically segregated from these and they play no role in attestation
+
+Although the host CPU, and its firmware and microcode, are critical to the security of a TEE, they are not considered part of the [TCB](#tip-tcb).
+Instead, they are considered the hardware root of trust.
+The CPU and CPU manufacturer are therefore the root of the chain of trust for the entire TEE and ultimately you must trust these organisation and their products.
+An overview of the [TCB](#tip-tcb) and hardware root of trust are shown in [](#fig-tcb-and-rot).
 
 ::::{figure}
 :label: fig-tcb-and-rot
@@ -107,6 +138,23 @@ A block diagram showing an example of a TEE implementation, showing the TCB, the
 % class other untrusted
 % :::
 ::::
+
+TEEs don't address vulnerabilities of code or processes _inside_ the TEE.
+Malicious software (including a guest OS) inside an enclave may still have access to secrets and be able to exploit these or expose them outside the TEE.
+
+Similarly, TEEs do not protect against users able to interact software inside a TEE, such as an OS or API.
+Users may be able to use their privileges, or exploit a vulnerable software inside the TEE, to access or leak sensitive data.
+TEEs do not, therefore, rule out the need for security best practices regarding user access and the application running inside the enclave.
+
+:::{important} Trusted software
+TEEs do not provide protection from processes in the TEE.
+Therefore, all software (including any OS) in the TEE must be trusted, and forms part of the [TCB](#tip-tcb).
+This is illustrated in [](#fig-tcb-and-rot).
+:::
+
+Advanced side-channel, physical-access attacks have been use to expose TEE secrets.
+However, an attack able to read arbitrary memory in plain text has not been demonstrated.
+Proven attacks include [tee.fail](https://tee.fail/) and [wiretap.fail](https://wiretap.fail/).
 
 (sec-cc-attestation)=
 ## Attestation
