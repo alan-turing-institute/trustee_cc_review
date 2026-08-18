@@ -41,33 +41,6 @@ This is especially true in cases where technical solutions are impractical or co
 A more holistic view of security when handling sensitive data is described by [The Five Safes](https://ukdataservice.ac.uk/help/secure-lab/what-is-the-five-safes-framework/)
 :::
 
-(sec-tre-models)=
-## TRE Models
-
-There is a tremendous diversity in the implementation of TREs.
-It is still common for organisations to build or commission their own TRE and they are often designed for the needs of one organisation.
-As such, despite the emergence of archetypes and common tools, there is no standard TRE implementation or architecture.
-This makes deciding where a TEE could add value to a TRE more difficult, requiring consideration of a particular TRE's design and use.
-However, we can consider the "dimensions" of TRE design to make more general recommendations about which styles of TRE stand most to gain from the adoption of confidential computing.
-
-- Dimensions
-  - Depending how TEEs are used…
-    - one TEE for whole TRE (no user-user isolation)
-    - TEE for each user (user-user isolation)
-    - TEE for each job (workload-level isolation)
-  - How is data accessed
-    - All users have access to data
-    - RBAC to assign an identity all of "their" data sets (possibility to mix datasets against governance rules)
-    - User/project matrix. Each person has N accounts for their N projects (already strongly isolates datasets which should not be mixed)
-  - Hosting
-    - How much trust in host
-    - Same organisation or split across organisations
-- Examples/case studies
-  - SAIL/Scottish NHS
-  - ONS?
-  - OpenSAFELY
-  - Aridhia
-
 ## Roles and entities
 
 The language used to describe TRE systems varies.
@@ -114,7 +87,7 @@ TRE User
 (sec-recommendations)=
 ## Recommendations
 
-By considering the [design of TREs](#sec-tre-models) and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
+By considering the design of TREs and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
 
 ### 1. When strong isolation from the host is required
 
@@ -166,9 +139,10 @@ Since no {term}`TRE user` has no access to the host or hypervisor, the attacks w
 
 When dealing with highly-sensitive data, computer security is not the only option for protecting against unauthorised disclosure.
 Instead, in line with the Five Safes framework [@five-safes], a more holistic approach to security should be taken and the data should be modified to reduce disclosure risk if possible (for example pseudononymisation, data minimisation or the use of synthetic or dummy data).
+
 When highly-sensitive data must be used, however, it is appropriate to reduce risk in other dimensions.
 In these cases, the use of TEEs may be beneficial.
-It would offer most benefit when dealing with data which would encourage high-motivated attackers to launch sophisticated attacks at the infrastructure level.
+It would offer most benefit when dealing with data which would encourage high-motivated attackers to launch sophisticated attacks targeted at the {term}`TRE infrastructure`.
 For example, compromising the host OS, BIOS or a social engineering attack targeting the {term}`infrastructure operator`.
 
 (sec-considerations)=
@@ -189,7 +163,7 @@ Integration of devices into TEEs is not generally solved, although the latest ge
 For many, it may therefore not be possible to build on TEEs without a large investment in new hardware.
 
 (sec-considerations-configuration)=
-### Configuration
+### TEE and host configuration
 
 In addition to capital investment in hardware, an organisation implementing confidential computing on-premises will need to perform the necessary configuration and setup.
 Vendor guides give an impression of the work involved, for example these setup guides from [AMD](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors) and [Intel](https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/01/introduction/).
@@ -201,20 +175,31 @@ This may include,
 - Guest OS configuration (for example, building a minimal guest image with necessary tools)
 - Configuring other trusted hardware, such as GPUs or NICs
 
-Both costs can be avoided by using a third-party, such as a cloud computing provider, to provide TEEs as a service
-A reduction in upfront expense … in exchange for (likely) larger operational expenses
+Configuration costs may be avoided by using a third-party, such as a cloud computing provider, to provision TEEs as a service.
+This may however be a trade in upfront expense for larger operational expenses.
 
 ### TRE design and implementation cost
 
+There is a tremendous diversity in {term}`TRE implementations <TRE implementation>`.
+It is still common for organisations to build or commission their own {term}`TRE` and they are often designed for the needs of one organisation.
+As such, despite the emergence of archetypes and common tools, there is no standard {term}`TRE implementation` or architecture.
+This makes it difficult to make blanket statements about how TEEs should be used in {term}`TRE implementations <TRE implementation>`.
 Incorporating TEEs into a {term}`TRE implementation` is not a trivial change.
-TRE builders should take care to consider how and where to use confidential computing to protect sensitive workloads inside a {term}`TRE`, and the development effort this requires.
-In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to [confidential containers](#sec-ccs-coco).
-However, in other cases it may require significant code changes like the splitting of confidential and non-confidential code, building on CC APIs, or major architectural changes to the {term}`TRE implementation`.
 
+TRE builders should take care to consider how and where to use confidential computing to protect sensitive workloads inside a {term}`TRE`
 A key consideration is how the use of a TEE affects the size of the [TCB](#tip-tcb).
+The focus for TRE developers should be to,
+
+- Move sensitive processes into TEEs first
+- Minimise the size of TEEs (and hence the [TCB](#tip-tcb))
+
 Moving large, monolithic TRE components into a TEE may not produce much benefit.
 As [explained above](#sec-tre-security), all code moved into a TEE remains part of the [TCB](#tip-tcb) and vulnerabilities in the [TCB](#tip-tcb) will compromise security, irrespective of the secure TEE boundary.
 For example, moving large "workspace VMs" to CVMs, while providing isolation from the host, will not provide any mitigation for vulnerabilities in the workspace OS or software.
+
+With a clear design the development effort or introducing TEEs can be assessed.
+In some cases, it may be a simple task of shifting existing entities from VMs to CVMs, or pods from a conventional runner to [confidential containers](#sec-ccs-coco).
+However, in other cases it may require significant code changes like the splitting of confidential and non-confidential code, building on CC APIs, or major architectural changes to the {term}`TRE implementation`.
 
 (sec-considerations-infra)=
 ### Attestation infrastructure
@@ -251,7 +236,7 @@ However, that comes at the cost of significant buy-in with the cloud platform as
 Furthermore, attestation reports will contain vendor-specific fields, related to that vendor's suite of confidential computing capabilities.
 Therefore, incorporating new hardware (in particular hardware from a new vendor) or migrating to different hardware will likely require updating attestation policy.
 
-## Conclusion
+## Discussion
 
 % TEE summary
 To understand whether TEEs add value to a TRE, it is critical to remember that TEEs protect data in use by cryptographically isolating workloads.
@@ -262,21 +247,15 @@ Only in situations where attack from the host is a viable risk do TEEs provide a
 As the administrators of TREs and the infrastructure they run on have, in principle, access to sensitive data it is common to use policy and training to reduce the risk of unauthorised data access or disclosure.
 It is common to have a high level of trust in the {term}`infrastructure operator`, in which case a TEE will not significantly reduce risk.
 In these cases, while the use of TEEs would reduce the attack surface and make a TRE more secure, the cost and added complexity may not be justified.
-Addressing the more likely risks first …
+Effort would be better spent addressing the more likely risks before considering TEEs.
 
-Perhaps the most common instance where a TEE would add value to a TRE is when the {term}`TRE operator` and {term}`infrastructure operator` are different parties.
-This could be a TRE hosted on a public cloud, a TRE hosted by a third-party contractor, or a satellite TRE.
+Beyond the effective and appropriate use of TEEs within a {term}`TRE implementation` there are a number of [key practical considerations](#sec-considerations).
+Most importantly, TEEs are not a simple "drop-in" solution and require investment in [hardware](#sec-considerations-hardware), [configuration](#sec-considerations-configuration) and building the [supporting infrastructure to handle attestation reports](#sec-considerations-infra).
+Furthermore, support for TEEs is far from universal and requires recent hardware and modern BIOS and OS.
+For many organisations this will mean purchasing and provisioning new systems.
+Therefore, while TEEs can, in some situations, significantly improve TRE security it is possible that time spent on integrating TEEs may be wasted as access to supported systems will be low.
 
-% New models of TRE and trusted research
-More excitingly, TEEs could open new models of TRE and new approaches to trusted research where untrusted devices are targeted.
-Without confidential computing, we need to ensure a host system is trustworthy and secure to be used.
-However, as trust in a TEE does not depend on trust in the host it is possible, in principle, to run trusted workloads on …
-The use of TEEs could then widen access to TREs and make deploying TREs easier.
-This idea is already being explored by the [ManaTEE project](https://manatee-project.github.io/manatee/).
-It would also be possible to distribute trusted research to end user devices, which could be applied to problems which scale well to large numbers of workers, or to participants contributing to research by running … locally their own data
-This would be dependent on confidential computing capability becoming common on consumer devices; currently in computer hardware it is exclusive to datacentre/enterprise.
-
-In summary, the situations when we recommend the use of TEEs to enhance TRE security are,
+The situations where we recommend the use of TEEs to enhance TRE security are,
 
 1. Strong isolation from the host
    1. Third party system (TRE hosted by another org, public cloud)
@@ -284,8 +263,19 @@ In summary, the situations when we recommend the use of TEEs to enhance TRE secu
    1. Bring-your-own-compute (TREs on laptops, mesh TREs)
 1. Extreme data sensitivity
 
-Beyond the effective and appropriate use of TEEs within a {term}`TRE implementation` there are a number of [key practical considerations](#sec-considerations).
-Most importantly, TEEs are not a simple "drop-in" solution and require investment in [hardware](#sec-considerations-hardware), [configuration](#sec-considerations-configuration) and building the [supporting infrastructure to handle attestation reports](#sec-considerations-infra).
-Furthermore, support for TEEs is far from universal and requires recent hardware and modern BIOS and OS.
-For many organisations this will mean purchasing and provisioning new systems.
-Therefore, while TEEs can, in some situations, significantly improve TRE security it is possible that time spent on integrating TEEs may be wasted as access to supported systems will be low.
+% Common
+Perhaps the most common instance where a TEE would add value to a TRE is when the {term}`TRE operator` and {term}`infrastructure operator` are different parties.
+This could be a TRE hosted on a public cloud, a TRE hosted by a third-party contractor, or a satellite TRE.
+Additionally, where highly sensitive data must be used, TEEs can play an important role in protecting data from motivated attackers who are able to exploit vulnerabilities in the {term}`TRE infrastructure`.
+
+% New models of TRE and trusted research
+More excitingly, TEEs could open new models of TRE and new approaches to trusted research where untrusted devices are targeted.
+Without confidential computing, we need to ensure a host system is trustworthy and secure to be used.
+However, as trust in a TEE does not depend on trust in the host it is possible, in principle, to run trusted workloads securely on compromised and insecure devices.
+
+The use of TEEs could then widen access to TREs and make deploying TREs easier.
+This idea is already being explored by the [ManaTEE project](https://manatee-project.github.io/manatee/).
+It would also be possible to distribute trusted research to the public,
+dependent on confidential computing capability becoming common on consumer devices.
+This could be applied to problems which scale well to large numbers of workers,
+or to participants contributing to research running analysis locally their own data.
