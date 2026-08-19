@@ -5,13 +5,16 @@ project:
     CNCF: Cloud Native Computing Foundation
     CPU: Central Processing Unit
     CVM: Confidential Virtual Machine
+    DMA: Direct Memory Access
     EAT: Entity Attestation Token
     GPU: Graphics Processing Unit
+    IDE: Integrity and Data Encryption
     IETF: Internet Engineering Task Force
     IME: Intel Management Environment
     JWT: JSON Web Token
     OCI: Open Container Initiative
     OS: Operating System
+    PCIe: Peripheral Component Interconnect Express
     PROM: programmable read-only memory
     RFC: request for comments
     RME: Realm Management Extensions
@@ -19,6 +22,7 @@ project:
     SNP: Secure Nested Paging
     SoC: System on a Chip
     TCB: Trusted Compute Base
+    TDISP: TEE Device Interface Security Protocol
     TEE: Trusted Execution Environment
     TRE: Trusted Research Environment
     VM: Virtual Machine

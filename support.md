@@ -207,6 +207,33 @@ Confidential Containers additionally provides [features](https://confidentialcon
 These include being able to query attestation evidence in container processes, directing the confidential guests to pull from container image proxies, and providing container processes with access to encrypted secrets.
 These tools can be used to build more complex workflows than simply running discrete confidential pods.
 
+(sec-ccs-gpu)=
+### GPUs and other devices
+
+TEEs are CPU-based, with the important processes maintaining confidentiality and creating trust being handled by the {term}`secure processor`.
+There is therefore a challenge integrating devices, such as GPUs,
+with TEEs as there needs to be a mechanism for confidential data to be moved from the TEE to a trusted device without exposing it in plain text on the host.
+Some TEE implementations allow for the creation of shared memory [@amd-memory-encryption].
+These are pages which can be accessed by both the host and TEE, and are not encrypted by the TEEs memory encryption key.
+This space can therefore be used to send messages between the host and TEE.
+
+To communicate with a trusted device, shared pages can be used as a [bounce buffer](https://community.intel.com/t5/Blogs/Tech-Innovation/Artificial-Intelligence-AI/Confidential-AI-with-GPU-Acceleration-Bounce-Buffers-Offer-a/post/1740417).
+Instructions from the TEE can be encrypted using a device public key and written to the shared memory, where the device can read before decrypting in it's own confidential computing zone.
+This way, the communication between device and TEE are never exposed to the host in plain text.
+
+An alternative approach is to allow DMA to the TEE from the device.
+This approach is more performant as data does not need to pass through an intermediate buffer, reducing latency.
+It is also potentially more secure as messages between TEE and device are never stored in memory pages available to the host OS or hypervisor.
+However, to use a device in this way both the device and CPU must support a common method for this communication.
+The [PCI-SIG](https://pcisig.com/) has produced [two specifications](https://pcisig.com/blog/ide-and-tdisp-overview-pcie%C2%AE-technology-security-features) for this purpose,
+
+- [IDE](https://pcisig.com/PCI%20Express/ECN/Base/IntegrityandDataEncryption_A) provides a method to encrypt communication between TEE and devices over PCIe.
+- The [TDISP](https://pcisig.com/PCI%20Express/ECN/Base/TEEDeviceInterfaceSecurityProtocol) protocol can be used to establish trust with, connect, and disconnect a device to a CVM.
+
+As with the CPU, it is important to establish trust in devices connected to a TEE.
+Before trust in a device has been established, a TEE should not use it.
+With an untrusted connection established (either through a bounce buffer or TDISP), [evidence gathering](#sec-cc-attestation-evidence) similar to with a CPU can occur and claimed verified in an attestation report.
+
 (sec-ccs-vendor)=
 ## Vendor Support
 
@@ -214,13 +241,14 @@ These tools can be used to build more complex workflows than simply running disc
 
 :::{table} Vendor TEE implementations
 :label: tab-vendor
-| Vendor   | Hardware   | Archetype                                   | Implementation                              | Container Support[^cc]   |
-| -------- | ---------- | ------------------------------------------- | ------------------------------------------- | ------------------------ |
-| AMD      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | SEV-SNP                                     | ✅ (with Kata)           |
-| ARM      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | CCA                                         | 🟠 (attestation only)    |
-| Intel    | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | TDX                                         | ✅ (with Kata)           |
-| Intel    | CPU        | [Enclave](#sec-ccs-cc-archetypes-enclave)   | SGX                                         | ✅                       |
-| Nvidia   | GPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | compatibile with SEV-SNP, CCA and TDX       |                          |
+| Vendor   | Hardware   | Archetype                                   | Implementation                                  | Container Support[^cc]   |
+| -------- | ---------- | ------------------------------------------- | -------------------------------------------     | ------------------------ |
+| AMD      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | SEV-SNP                                         | ✅ (with Kata)           |
+| AMD      | GPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | TDISP                                           |                          |
+| ARM      | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | CCA                                             | 🟠 (attestation only)    |
+| Intel    | CPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | TDX                                             | ✅ (with Kata)           |
+| Intel    | CPU        | [Enclave](#sec-ccs-cc-archetypes-enclave)   | SGX                                             | ✅                       |
+| Nvidia   | GPU        | [Secure VM](#sec-ccs-cc-archetypes-vm)      | bounce buffer or TDISP (from Blackwell onwards) |                          |
 :::
 
 [^cc]: Supported by the [Confidential Containers project](https://confidentialcontainers.org/docs/overview/)
@@ -294,7 +322,7 @@ A number of Cotrex mobile and Neoverse datacentre CPUs have been developed with 
 The Neoverse V3 datacentre/cloud processors support CCA.
 These have been manufactured into SoCs, AWS Graviton5, Azure Cobalt 200 and Nvidia Thor.
 
-##### Resources
+#### Resources
 
 - [ARM CCA](https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture) feature summary
 - [CCA on Fujitsu Monaka](https://developer.arm.com/community/arm-community-blogs/b/servers-and-cloud-computing-blog/posts/how-fujitsu-implemented-confidential-computing-on-fujitsu-monaka-with-arm-cca) upcoming CPU blog post
@@ -335,7 +363,7 @@ Support has remained for the latest generations of Xeron processors, with Intel 
 TDX is supported on the 5th and 6th Generation Xeon (Emerald Rapids and Granite Rapids respectively) CPUs.
 Some cloud providers have special SKUs of 4th Generation Xeon (Sapphire Rapids) which are TDX-compatible, however these are not generally available.
 
-##### Resources
+#### Resources
 
 - [SGX](https://www.intel.com/content/www/us/en/developer/tools/software-guard-extensions/overview.html)
 - [SGX Developers Guide](https://download.01.org/intel-sgx/latest/linux-latest/docs/Intel_SGX_Developer_Guide.pdf)
@@ -355,8 +383,8 @@ Intel GPUs currently have no support for TEEs.
 
 ##### Summary
 
-For its recent GPU architectures, Nvidia has developed technology to allow its accelerators to be attested and used in secure guests.
-Integration of Nvidia GPUs is supported for SEV-SNP, CMA and TDX.
+For its recent GPU architectures, Nvidia has developed technology to allow its accelerators to be attested and used in secure guests [@nvidia-secure-ai].
+Integration of Nvidia GPUs is supported for SEV-SNP and TDX.
 
 ##### Hardware Support
 
@@ -372,7 +400,7 @@ Despite packaging a Hopper GPU with an ARMv9 CPU, the CPU model (Neoverse V2) do
 The announced [Vera Rubin superchip](https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer) will support confidential computing.
 It is comprised of Rubin GPUs and Vera CPUs (with custom ARMv9-A cores) on a tightly integrated datacentre rack.
 
-##### Resources
+#### Resources
 
 - [Nvidia confidential computing](https://www.nvidia.com/en-us/data-center/solutions/confidential-computing/)
 - [H100 confidential computing](https://developer.nvidia.com/blog/confidential-computing-on-h100-gpus-for-secure-and-trustworthy-ai/) blog post

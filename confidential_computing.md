@@ -168,6 +168,7 @@ Attestation verifies that,
 
 In some cases, it may also verify that some software component of the TEE is in a known state, _i.e._ it has not been modified or tampered with.
 
+(sec-cc-attestation-evidence)=
 ### Attestation Evidence
 
 In order to attest the legitimacy of a TEE, evidence about that TEEs state must be assessed.
