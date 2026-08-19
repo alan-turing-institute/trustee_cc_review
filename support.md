@@ -270,37 +270,30 @@ SEV is a TEE, but care should be taken as without SEV-SNP, there are known vulne
 Communication between host and secure guests is supported in SEV.
 Each guest is able to specify which pages of memory should be private (encrypted with the guest's unique key) and shared (encrypted with a hypervisor key).
 
+Communication with devices using TDISP/IDE has been supported since 9005 (Turin) in a feature called Trusted IO.
+
 ##### Hardware Support
 
 TEEs are a feature of the datacentre EPYC line of CPUs.
 SEV is supported from EPYC 7001 (Naples) and SEV-SNP from 7003 (Milan).
 The [AMD website](https://www.amd.com/en/developer/sev.html) has a table of features introduced across subsequent CPU generations.
 
-##### Resources
+(sec-ccs-vendor-amd-gpu)=
+#### GPU
+
+The [MI455X](https://www.amd.com/content/dam/amd/en/documents/products/accelerators/instinct/amd-instinct-mi455x_brochure.pdf) will be the first AMD GPU to support TEE integration.
+Connection will be made through TDISP/IDE and compatible with Intel and AMD CPUs which also support those standards.
+The [Helios](https://www.amd.com/content/dam/amd/en/documents/products/accelerators/instinct/amd-instinct-helios-blueprint-brochure.pdf) system will incorporate MI455Xs, Pensando NICs and AMD Venice CPUs.
+Both the NICs and GPUs can be passed to CVMs.
+
+#### Resources
 
 - [AMD Infinity Guard](https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html) security technologies
 - [AMD SEV](https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html) developer information
+- [AMD confidential computing](https://www.amd.com/en/products/processors/server/epyc/confidential-computing.html)
 - [SEV-SNP whitepaper](https://docs.amd.com/v/u/en-US/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more)
 - [SEV-SNP attestation process](https://www.amd.com/content/dam/amd/en/documents/developer/lss-snp-attestation.pdf) presentation at Linux Security Summit 2022
-
-#### GPU
-
-There is currently no support for confidential computing with AMD GPUs.
-There are signs that AMD considers secure computing on GPUs as an important, however there is no clear roadmap for its introduction.
-
-> Security starts with the foundations:
->
-> - Establishing a trusted execution environment by booting the device securely from power-on.
-> - Ensuring supply chain security to verify the authenticity of devices, and
-> - Adhering to industry standards and contributing to their development.
->
-> On this foundation, we build advanced capabilities such as workload isolation through virtualization and confidential computing to help protect workloads during execution.
->
-> Another key focus is assurance.
-> At AMD, we implement a secure development lifecycle from design to release.
-> This includes threat modeling to anticipate potential attacks and building countermeasures during the design phase.
->
-> --- [Nathan Nadarajah](https://www.amd.com/en/blogs/2025/helping-secure-gpus-that-advance-ai.html)
+- [Trusted I/O whitepaper](https://www.amd.com/content/dam/amd/en/documents/developer/sev-tio-whitepaper.pdf)
 
 ### ARM
 
@@ -351,8 +344,10 @@ As developing for enclave TEEs requires significant code changes, Intel produces
 
 [Intel TDX](https://www.intel.com/content/www/us/en/developer/tools/trust-domain-extensions/overview.html) is a newer system for confidential computing than SGX.
 Unlike SGX, TDX is a [secure VM](#sec-ccs-cc-archetypes-vm) TEE.
-The confidential VMs are refered to as trust domains.
+The confidential VMs are referred to as trust domains.
 Communication between the host and TEE is possible through a shared portion of memory, the Shared Extended Page Table.
+
+TDX TEEs support integrating devices through TDISP/IDE in a feature called [TDX Connect](https://www.intel.com/content/www/us/en/content-details/862706/intel-tdx-connect-architecture-specification.html)
 
 ##### Hardware Support
 
@@ -384,15 +379,16 @@ Intel GPUs currently have no support for TEEs.
 ##### Summary
 
 For its recent GPU architectures, Nvidia has developed technology to allow its accelerators to be attested and used in secure guests [@nvidia-secure-ai].
-Integration of Nvidia GPUs is supported for SEV-SNP and TDX.
+Integration of Nvidia GPUs is supported for SEV-SNP, and TDX.
 
 ##### Hardware Support
 
-Confidential computing is supported on the Hopper and Blackwell architectures of datacentre GPUs.
-It will also be supported on the future Rubin architecture.
-When provisioned on a TEE capable host from a compatible vendor, a GPU from these families may be used by a secure VM.
+Confidential computing is supported on the Hopper, Blackwell and Rubin architectures of datacentre GPUs.
+When provisioned on a TEE capable host from a compatible vendor, a GPU from these families may be used by a CVM.
+Bounce buffers can be used with all families but DMA with TDISP/IDE is only supported from Blackwell onwards [@nvidia-secure-ai].
+Single, or multiple GPUs can be connected to a CVM, however, with Hopper this is limited to specific HGX products.
 
-:::{important}
+:::{important} Grace Hopper
 Nvidia Grace Hopper superchips do not support confidential computing.
 Despite packaging a Hopper GPU with an ARMv9 CPU, the CPU model (Neoverse V2) does not include RME instructions.
 :::
