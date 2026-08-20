@@ -209,7 +209,7 @@ making the most of TEEs requires more effort.
 By skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.[^performative-security]
 @ccc-degrees outlines levels of adoption of confidential computing, emphasising the importance of [attestation](#sec-cc-attestation) in verifying that a TEE is trustworthy, and further the integration of attestation into workload-level logic.
 
-In order to effectively use confidential computing, a suitable policy must developed _and_ maintained which attestation reports will be measured against.
+In order to effectively use confidential computing, a suitable policy, which attestation reports will be measured against, must be developed _and_ maintained.
 While it would be possible for attestation reports to be inspected manually, it is more likely that a {term}`relying party` will establish infrastructure to handle reports.
 Furthermore, processes to react to reports, for example excluding non-compliant TEEs from running sensitive workloads, must be implemented.
 It would be best for these processes to be automated, which adds to the complexity of the attestation infrastructure.
@@ -243,7 +243,7 @@ Therefore, incorporating new hardware (in particular hardware from a new vendor)
 
 % TEE summary
 To understand whether TEEs add value to a TRE, it is critical to remember that TEEs protect data in use by cryptographically isolating workloads.
-This is protection against privileged users on the host, and sophisticated attacks aimed at the OS, hypervisor, BIOS.
+This is protection against privileged users on the host, and sophisticated attacks aimed at the OS, hypervisor or BIOS.
 Only in situations where attack from the host is a viable risk do TEEs provide a substantial benefit.
 
 % Trust in host

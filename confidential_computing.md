@@ -37,7 +37,7 @@ However, it cannot be arbitrarily controlled by the host to bypass enclave isola
 The secure processor therefore plays a critical role in the operation of a TEE.
 
 :::{important} Trust
-You must have ultimate and explicit trust is in the CPU vendor.
+You must have ultimate and explicit trust in the CPU vendor.
 You must trust that,
 
 1. they have produced a CPU capable of provisioning TEEs
@@ -59,7 +59,7 @@ A TEE implementation may also protect against some physical, hardware-based atta
 Furthermore, as the lifecycle of a TEE and the attestation process do not depend on trust in the host, a TEE remains secure even in the case of the host OS, hypervisor, software, drivers or firmware being compromised.
 
 :::{important} Key message
-In summary, TEEs 
+In summary, TEEs
 
 - Remove the need to trust many software and hardware components of a host, and the operator of that host
 - Ensure processes are confidential even when security vulnerabilities are exploited on the host
@@ -117,7 +117,7 @@ A block diagram showing an example of a TEE implementation, showing the TCB, the
 %     vendor["CPU vendor"]
 %   end
 %   rot["hardware root of trust"]
-% 
+%
 % classDef label fill:#FFFFFF,stroke-width:0px;
 % class tee label
 % class host label
