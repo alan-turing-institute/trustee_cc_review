@@ -366,6 +366,7 @@ Some cloud providers have special SKUs of 4th Generation Xeon (Sapphire Rapids) 
 - [TDX](https://www.intel.com/content/www/us/en/developer/tools/trust-domain-extensions/overview.html)
 - [Which Intel TEE is right for you](https://www.intel.com/content/www/us/en/content-details/818845/which-intel-trusted-execution-environment-is-right-for-you.html) graphic
 - [Intel Trust Authority](https://www.intel.com/content/www/us/en/security/trust-authority.html) attestation service
+- [TDX Connect](https://www.intel.com/content/www/us/en/content-details/862706/intel-tdx-connect-architecture-specification.html) specification
 
 #### GPU
 
