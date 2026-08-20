@@ -87,7 +87,7 @@ TRE User
 (sec-recommendations)=
 ## Recommendations
 
-By considering the design of TREs and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs as substantial value to TREs and should be considered.
+By considering the design of TREs and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs add substantial value to TREs and should be considered.
 
 ### 1. When strong isolation from the host is required
 
