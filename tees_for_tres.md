@@ -213,7 +213,7 @@ In order to effectively use confidential computing, a suitable policy must devel
 While it would be possible for attestation reports to be inspected manually, it is more likely that a {term}`relying party` will establish infrastructure to handle reports.
 Furthermore, processes to react to reports, for example excluding non-compliant TEEs from running sensitive workloads, must be implemented.
 It would be best for these processes to be automated, which adds to the complexity of the attestation infrastructure.
-This aspect could become a significant part of the task of incorporating TEEs into a {term}`TRE implementation`, especially if attestation is conducted on a per-job basis as discussed in TEE adoption level 3 [@ccc-degrees].
+This aspect could become a significant part of the task of incorporating TEEs into a {term}`TRE implementation`, especially if attestation is conducted on a per-job basis and includes verification of the workload itself [@ccc-degrees].
 
 A number of projects are beginning to build open source tools for managing TEEs ([VirTEE](https://virtee.io/), [Islet](https://github.com/islet-project/)) handling attestation ([VERASION](https://github.com/veraison)) and abstracting TEEs for containers and applications ([dstack](https://dstack.org/), [Ernax](https://enarx.dev/)).
 As these tools mature the use of TEEs will become easier and more accessible.
