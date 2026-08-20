@@ -230,8 +230,11 @@ The enforcement of policy can be automated, however, there will unavoidably be a
 Introducing TEE support may involve building on vendor-specific hardware, services and APIs.
 In these cases, the benefits of TEEs must be balanced against the long-term ability to migrate a TRE instance and the short-term potential for other organisations to deploy your TRE in their own context.
 Appetites for lock-in may greatly differ; some organisations may have longstanding good relationships with a vendor, or may have no ambition for their TRE to be deployed by others.
-Cloud platforms can provide more generic interface to deploying CVMs.
+
+Cloud platforms may provide a more generic interface to deploying CVMs.
 However, that comes at the cost of significant buy-in with the cloud platform as a whole.
+Some open source projects focus on abstracting TEE management, such as [Open Enclave SDK](https://openenclave.io/sdk/), providing a generic interface to multiple TEE implementations.
+As these mature they may make migration between vendors or using multiple vendors in a single system easier.
 
 Furthermore, attestation reports will contain vendor-specific fields, related to that vendor's suite of confidential computing capabilities.
 Therefore, incorporating new hardware (in particular hardware from a new vendor) or migrating to different hardware will likely require updating attestation policy.
