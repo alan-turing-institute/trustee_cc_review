@@ -112,7 +112,10 @@ The {term}`infrastructure operator` will have a high degree of privilege and acc
 The cryptographic isolation of a TRE from the {term}`TRE infrastructure` using a TEE ensures that the {term}`infrastructure operator` is not able to access data in use, whether maliciously or accidentically.
 
 Precisely how important this is will depend on the trust in the infrastructure operator and the guarantees they provide.
-For example, large cloud providers make strong statements about their ability to isolate tenant from each other, and from the cloud provider's staff.
+For example, large cloud providers rely on their ability to isolate tenant from each other, and from the cloud provider's staff to operate.
+Their processes are documented and audited as part of their certification and compliance with information security standards, for example [AWS](https://aws.amazon.com/compliance/services-in-scope/), [Azure](https://learn.microsoft.com/en-us/azure/compliance/offerings/) and [GCP](https://cloud.google.com/security/compliance/offerings#/).
+In particular, the [ISO/IEC 27017](https://www.iso.org/standard/27017) standard (part of the [ISO/IEC 27000 family](https://www.iso.org/standard/iso-iec-27000-family)) focuses on the challenges of cloud services including isolating tenants environments.
+
 However, even in cases where there is absolute trust in the {term}`infrastructure operator` TREs are still vulnerable to attack from a compromised {term}`TRE infrastructure`.
 Other scenarios where TEEs provide valuable isolation to TREs more appropriate solution are,
 
