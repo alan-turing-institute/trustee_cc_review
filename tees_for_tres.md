@@ -89,13 +89,21 @@ TRE User
 
 By considering the design of TREs and [the scope of TEEs protection](#sec-cc-security) we have arrived at the following situations where TEEs add substantial value to TREs and should be considered.
 
+(sec-recommendations-isolation)=
 ### 1. When strong isolation from the host is required
 
 Providing a way for compute to be run on an untrusted host, or host with untrusted users, is the central goal of confidential computing.
 This aligns well with many existing TRE scenarios, particularly where TREs are deployed to systems not entirely dedicated to trusted research (for example, local HPC or private cloud), or where a TRE is deployed to a third-party's system.
+In these cases, although there is likely a high level of trust in the host, protection from attacks targeting the host or vulnerabilities on the host infrastructure is valuable.
 Only when the same party holds the {term}`TRE operator` and {term}`infrastructure operator` roles _and_ the {term}`TRE infrastructure` is dedicated
 (that is, it isn't used for non-sensitive work) is isolation from the host not a strong benefit.
 
+:::{important} Isolating jobs or users
+TEEs are _not_ necessary for isolating individual jobs or {term}`TRE projects <TRE project>` from each other.
+This may be important in a {term}`TRE implementation` which supports multiple {term}`TRE projects <TRE project>` using the same {term}`TRE infrastructure`.
+In these cases, isolation can be introduced by using VMs.
+Since no {term}`TRE user` has no access to the host or hypervisor, the attacks which TEEs protect against are not viable.
+:::
 
 #### 1.a. TRE operator and infrastructure operator are different parties
 
@@ -118,24 +126,26 @@ In this scenario, different rules and processes for the administration of sensit
 An example of this would be an HPC system which provides a service for both sensitive and non-sensitive workloads.
 This model could be particularly effective on a private cloud, a {term}`TRE project` would be allocated a CVM while non-sensitive work is conducted with conventional VMs.
 
-#### 1.c. Low trust devices
+(sec-recommendations-lowtrust)=
+### 2. Low trust devices
 
 Another possible scenario is low-trust, end-user devices or "bring your own compute".
 As a TEE does not depend on trust in the host operating system or software, you can use a TEE to run trusted computation on an untrusted device.
+
+:::{important} Enabling new models of trusted research
+Unlike the situations in [class 1](#sec-recommendations-isolation), where the host is trusted but vulnerable, in this case the devices are _always_ untrusted.
+The use of TEEs is not only an improvement in security but critical to conducting trusted research on untrusted devices.
+TEEs are therefore an enabling technology for new models of trusted research.
+:::
+
 For example, individual laptops or institutional servers which are not designed for secure, multi-tenant use.[^commercial-use]
 In the extreme, widespread support of TEEs could allow distributed trusted research across untrusted devices, which would currently be far too risky to consider.
 Perhaps this could scale to large pools of workers similarly to how non-sensitive distributed research has been conducted by [Folding@Home](https://foldingathome.org/) or SETI@Home.
 
 [^commercial-use]: This is perhaps closer to the applications of confidential computing outside of trusted research, where a key challenge is running a process on an untrusted machine while ensuring its integrity and confidentiality.
 
-:::{important} Isolating jobs or users
-TEEs are _not_ necessary for isolating individual jobs or {term}`TRE projects <TRE project>` from each other.
-This may be important in a {term}`TRE implementation` which supports multiple {term}`TRE projects <TRE project>` using the same {term}`TRE infrastructure`.
-In these cases, isolation can be introduced by using VMs.
-Since no {term}`TRE user` has no access to the host or hypervisor, the attacks which TEEs protect against are not viable.
-:::
-
-### 2. When highly sensitive data must be used
+(sec-recommendations-sensitive)=
+### 3. When highly sensitive data must be used
 
 When dealing with highly-sensitive data, computer security is not the only option for protecting against unauthorised disclosure.
 Instead, in line with the Five Safes framework [@five-safes], a more holistic approach to security should be taken and the data should be modified to reduce disclosure risk if possible (for example pseudononymisation, data minimisation or the use of synthetic or dummy data).
@@ -260,11 +270,11 @@ Therefore, while TEEs can, in some situations, significantly improve TRE securit
 
 The situations where we recommend the use of TEEs to enhance TRE security are,
 
-1. Strong isolation from the host
+1. [Strong isolation from the host is needed](#sec-recommendations-isolation)
    1. Third party system (TRE hosted by another org, public cloud)
    1. Multi-use system (private cloud _etc._)
-   1. Bring-your-own-compute (TREs on laptops, mesh TREs)
-1. Extreme data sensitivity
+1. [Low-trust devices](#sec-recommendations-lowtrust) or bring-your-own-compute (TREs on laptops, mesh TREs)
+1. [Extreme data sensitivity](#sec-recommendations-sensitive)
 
 % Common
 Perhaps the most common instance where a TEE would add value to a TRE is when the {term}`TRE operator` and {term}`infrastructure operator` are different parties.
