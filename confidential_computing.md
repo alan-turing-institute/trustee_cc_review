@@ -58,7 +58,7 @@ This confidentiality includes privileged users on the host OS or hypervisor.
 A TEE implementation may also protect against some physical, hardware-based attacks such as reading memory directly (bypassing the CPU), or malicious code running early in the boot process.
 Furthermore, as the lifecycle of a TEE and the attestation process do not depend on trust in the host, a TEE remains secure even in the case of the host OS, hypervisor, software, drivers or firmware being compromised.
 
-:::{important} Key message
+:::{important} TEE protection
 In summary, TEEs
 
 - Remove the need to trust many software and hardware components of a host, and the operator of that host
