@@ -158,6 +158,13 @@ In these cases, the use of TEEs may be beneficial.
 It would offer most benefit when dealing with data which would encourage high-motivated attackers to launch sophisticated attacks targeted at the {term}`TRE infrastructure`.
 For example, compromising the host OS, BIOS or a social engineering attack targeting the {term}`infrastructure operator`.
 
+:::{attention} Viability of attack
+LLM agents have been demonstrated finding and exploiting zero-day vulnerabilities in computer systems.
+As models improve, particularly open-weight models which can be run locally without guard rails, so will their ability to launch successful attacks.
+And so, while the attacks TEEs mitigate are complex, the barrier to launch will lower.
+In there future the threshold of data sensitivity (or value) where TEEs become necessary may reduce.
+:::
+
 (sec-considerations)=
 ## Considerations
 
