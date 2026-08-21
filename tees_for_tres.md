@@ -204,9 +204,8 @@ However, in other cases it may require significant code changes like the splitti
 (sec-considerations-infra)=
 ### Attestation infrastructure
 
-While simply enabling secure virtualisation, without verifying their state should give a high level of confidentiality from the host,
-making the most of TEEs requires more effort.
-By skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot decide whether to trust the TEE.[^performative-security]
+Enabling secure virtualisation should give a high level of confidentiality from the host, whether or not the state of a TEE is verified through attestation.
+However, by skipping the attestation, systems which interact with the TEE (and may rely on it being secure and confidential) cannot determine where the TEE is trustworthy.[^performative-security]
 @ccc-degrees outlines levels of adoption of confidential computing, emphasising the importance of [attestation](#sec-cc-attestation) in verifying that a TEE is trustworthy, and further the integration of attestation into workload-level logic.
 
 In order to effectively use confidential computing, a suitable policy, which attestation reports will be measured against, must be developed _and_ maintained.
