@@ -50,7 +50,7 @@ In contrast to [the previous, similar example](#fig-tcb-and-rot) the guest OS is
 
 ::::{figure}
 :label:fig-tcb-secure-vm
-:::{image} https://mermaid.ink/img/pako:eNp9k8ty2yAUhl-FIVvFIwdf6SqxnW0703TTqtMhErpMJNAAcpx6_O49gIRjNY424nzn9gOHI05lxjHFz7VMXxKBUCrrrhEaEWs4Sgslu_aP4ZzeWXiO6U0tc_PKFEcZM8yjouPa_Eqw-6Ov3xP82zq4yOwPSoHvabdDTGToafPQu9-3K6U2435Tb5ZvLVf7SkvlbWlKrqCgTQliIpSpas-V7mtDGrilHuLGmiwEXyeM6rThmQPQuWml4MLoDyQqeU1hXqnGioCCw9JttalSJe2JB1Fp20HQ5tuPQPYgSCoPe-NSKbS1m2Aqc3WVlAbJHDndLjIRac203vIc1eyZ1yCnrunNo_sibZR84bevVWZKGreHL324vRUfPwB3AhcEWl8A28KdxSctZu2hB_Rm7b7QMQyWX11i1_0DbjW8x1bDcGdexWx7_zi7v77RMK992sDt-I6ZH-ARhEsbo3DNI-4vcESt5POgedFkudw9rK6L9tN7Tgs8PIb_fe5hnDGOcKGqDFOweYQbrhpmTXy0Y5VgiG5gMiksM56zroZxSsQJ0lomfkrZDJlw-kWJac5qDVbXwsHxbcUKxZpAFWycq42E7piS2NXA9IgP1iKTmCymC0JIHC9X0wi_YTpfTaar5TxeLu7WZD2bk1OE_7qm8QT46R8dq6MJ?type=png
+:::{image} https://mermaid.ink/img/pako:eNp9UltvmzAY_SuW-7JJLIJwC95Tm6Svm7TuZWOaXDAXFTCyTZsuyn_fZ3NJoE0tJPyd73KO7XPECU8ZJvix4slT3CCU8KqrG4lcHRiU5IJ37V_FGFlr8FwzhJJn6oUKhlKqaA_lHZPqd4zNH337EeM_OsGaVP9gFOQe9nv06WF793lIXpIVXKolm9OHxWvLxHMpuehjrgomYJxumaRYKBXlMxNymA1tkOZyrFsq0iDkukaJTiqWGgCY65Y3rFHyHYmCX1OYlaLWImDguEW0SVFdJoLr-55EJW0HRdvvP-dqYLQWSkVqegXnCvEMGW0XVxY3SUWl3LEMVfSRVUBcVeTm3ixLKsGf2JeXMlUFsdvD16Fc335fPwLmrDMEBMwATWFO_QGF1x4GgNxEZk2Mk4H63Rw27O_gWsMlrDWMr9Or8Ha3997t9YNOvhzaRlzbdIn1Rl2A8DxLaHrQOa7Fnc3Ty3PDcH-3uS6vd-S5bcIng7_NGbNfwtjCuShTTABhFq6ZqKkO8VEbKcZQX4PfCGxTltGuUjGOmxO0tbT5xXk9dsJN5wUmGa0kRF0Ll8R2Jc0FrSdUgD-Z2HLgx2S9Cc0QTI74gIkTeCtvE0aOb7uRHax9C79i4gX2ynXt0NlEked4dnCy8D_Daq98J9Cf5wZ-5IaBf_oP-juVLQ?type=png
 :::
 The trusted and untrusted components of an example secure VM TEE.
 % :::{mermaid}
@@ -61,7 +61,7 @@ The trusted and untrusted components of an example secure VM TEE.
 %     software data
 %     guest["guest OS"]
 %   end
-%   tee["TEE and TCB"]
+%   tee["TEE (TCB)"]
 %   block:group_host:2
 %     columns 1
 %     hypervisor
@@ -73,9 +73,8 @@ The trusted and untrusted components of an example secure VM TEE.
 %     columns 1
 %     firmware["firmware and microcode"]
 %     cpu["CPU"]
-%     vendor["CPU vendor"]
 %   end
-%   rot["hardware root of trust"]
+%   rot["hardware root of trust (TCB)"]
 % 
 % classDef label fill:#FFFFFF,stroke-width:0px;
 % class tee label
@@ -91,7 +90,6 @@ The trusted and untrusted components of an example secure VM TEE.
 % class guest trusted
 % class cpu trusted
 % class firmware trusted
-% class vendor trusted
 % classDef untrusted fill:#377EB8,stroke-width:0px;
 % class hostos untrusted
 % class hypervisor untrusted
@@ -128,19 +126,22 @@ The basic workflow for an enclave TEE is,
 
 ::::{figure}
 :label:fig-tcb-enclave
-:::{image} https://mermaid.ink/img/pako:eNp9k8tu2zAQRX9FYLaqYb0tdpXGzbYFim5aFQUjUbYQiSOQlOPW8L93SL0sNYk25lze4RxyxheSQ8EJJU815M-ZcJwc6q4RyglMYFV6kNC1vzXn1Dfi7BlC1uKu7JTmxc-MDCujorFpQXChM3QyUThc5DU78Yz8mlM7MSdP61V67-eiMD9IglY01FXOdAVi2L6lPYLSa1yvD0EfucQDjMVRUOoXJrnrFLI6cakmNLMNavR9-bZkMOKC17omYPUKkoS3iMpKNgYCDxyX9rWaKpdgGjRB5W2Hpoev3yflhEAge3EIlqRY1lyCycKeKwG0A6Vjua0zMz1Ras9Lp2ZPvEacuqZ3j_ZzlZbwzD-8VIU-0m17_jjYTRd6_yjYF1goWHohmBL2Ld4pEbbnQaB3qf2mitMc9qulbKu_ohuGW9kwjD3rKcL9_WN4__ZFb8Z7zBy3sB1raWrgSu9bs1INzDxCPU6QJJ8_7d7HmXOm1W0XQP2v26mfZeKSg6wKQjHmLmm4bJgJycXMDP6Lj7zBsaO4LHjJuhpnJRNXTGuZ-AHQjJn4tIcjoSWrFUZdWzDN9xU7SNZMqsS7c_kAWJ1QP47tIYReyJlQL_E3URgE0db30sSPI9z9Q2gYeJt0t0t93_NSL9zGV5f8tWW3m2QbpUkShOEuiYIgjq__AJGorRk?type=png
+:::{image} https://mermaid.ink/img/pako:eNp9VNFumzAU_RXLfWURAVLAe2qb9nWTpr1smSoXTEAFG9kmzRbl33dtYgeyLESK7j0-99xjX8MBF6JkmOC3VhTvG45QIdqh4wrFJrEo2Uox9K-070lkQHQmuXxG1Iw5GCGoetVyUJqVPzf4FBkUNLpecMb1Bv9yfMZLF4IKFDBetHTHPMXIDfws6OOrkic5WAIq_LdNQXUjuJeb2q6F0m6Dbn_LMRW6ZhIkDAUpUekPKlmAStnsmFRezSwL5Xhfvs1dGHDm2LK8ZScztSTF_xxVjeyMCRB0IaK8RF1TSGFG6k0V_QCkp6_fPbIDQ0KO4CmZO4W2ZhNUllZXCqGRqJD1bZnjDyaj1JpVqKVvrAVLbUvuXuwTKC3FO_v00ZS6JmG__3yi2zFZvgNgznPAHssMAT8zwPS0B3SjZ9LvTwC5y-3jLfhbOkZz2Ha_ghsPV2CznSlsrLn5juaS9cNL8nDzQNwL4irdEozuEvLDvsDHMV6gxsz5uo124jR9fsxu2znX-Gg6HKH-xe0bMoVxgLeyKTEBhAW4Y7KjJsUHc8PgS1CzDi4pgbBkFR1auFkbfoSynvIfQnSuEg53W2NS0VZBNvQl1Wzd0K2knUcl7J7JJwH9MVkmWWxVMDngvcmTRbSMsjy8j1YB_o1JskoWeXIfL_NVFoZptjwG-I9tGS6yJM3jaBVlYRrnYRod_wL2yss9?type=png
 :::
 The trusted and untrusted components of an example enclave TEE.
 % :::{mermaid}
 % block
 %   columns 3
-%   block:group_tee:2
-%     columns 2
-%     app_trusted["trusted app component\n and enclave"]
+%   block:group_app:2
+%      columns 2
+%       block:group_tee
+%         app_trusted["trusted app component"]
+%       end
+%       tee["enclave"]
 %     app_untrusted["untrusted app component"]
 %   end
-%   tee["application"]
-%   block:group_host:2
+%   app["application"]
+%     block:group_host:2
 %     columns 1
 %     other["host software, drivers"]
 %     hostos["host OS"]
@@ -155,6 +156,7 @@ The trusted and untrusted components of an example enclave TEE.
 %   rot["hardware root of trust"]
 % 
 % classDef label fill:#FFFFFF,stroke-width:0px;
+% class app label
 % class tee label
 % class host label
 % class rot label
@@ -162,6 +164,7 @@ The trusted and untrusted components of an example enclave TEE.
 % class group_tee group
 % class group_host group
 % class group_rot group
+% class group_app group
 % classDef trusted fill:#4DAF4A,stroke-width:0px;
 % class app_trusted trusted
 % class cpu trusted

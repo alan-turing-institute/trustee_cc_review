@@ -83,17 +83,16 @@ This reduces the attack surface and simplifies the monitoring and maintenance of
 
 The [TCB](#tip-tcb) of a TEE can vary based on the [design of the TEE](#sec-ccs-cc-archetypes).
 However, it will always exclude the host OS and any hypervisor as the TEE is cryptographically segregated from these and they play no role in attestation
-
-Although the host CPU, and its firmware and microcode, are critical to the security of a TEE, they are not considered part of the [TCB](#tip-tcb).
-Instead, they are considered the hardware root of trust.
+The host CPU, and its firmware and microcode, are critical to the security of a TEE, and so are in the [TCB](#tip-tcb).
+They form the hardware root of trust.
 The CPU and CPU manufacturer are therefore the root of the chain of trust for the entire TEE and ultimately you must trust these organisation and their products.
 An overview of the [TCB](#tip-tcb) and hardware root of trust are shown in [](#fig-tcb-and-rot).
 
 ::::{figure}
 :label: fig-tcb-and-rot
-:::{image} https://mermaid.ink/img/pako:eNp9lE1zmzAQhv8Ko1yph2-Mekps59ZpZ5JeWjodBQmbCSBGEo5dj_97VxLgmMblgvbRfrxaLZxQwSlDGL3UvHjNW8cpeN03rXRCbRiKt4L33W_FGA40vPgMpuSleiOCWYsSRfSKtVS_IOxnjp43G4e01HlePeTo1zz1jks1z-1bc3fsmNhXkgtrc7VjAhLqkKmw61BR7ZmQQ24Ig20uR7-vT8PGoElD2OtbJXqpGDUAKjcdb1mr5AcSBb-lsKxEo0VAwnFpjtpUheC6u5OoouvBafXt-0T2IIgLCwfjWimU1Ycggpq8gnPl8NIxuo1n3hY1kXLNSqcmL6wGOXWN7x7N40ol-Cv79FZRtcNed_g8uOtbsf4jMB24IlD6CugSphf_KRF1hwHgu8w8U8VpiOzqGpvqH3Ct4T3WGsY7syqi9f1jdH_7oOOIjGEj11M6Z3A_czTd6Izbu5pRre4yU1ZfmKabh-VtfXZQL2ETn-b-3z3zDbzHyEUNEw2pKHzJJz03OQKfBkYPw5KykvQ1zEvensGV9Io_HdsCYUjAXAT93e4QLkktweo7aA1bV2QrSDPRjrQ_OG_GEEYrxcUX--swfxDjgvAJHRD2s3iRRoHv-4GXeHGUuuiIcJAGCy-L_WUUBomf-tnZRX9MTm8RZ8sk8cIgjoIwTLLERVuhDzNUF9BtJlYcjgzZ4_NfPl2j3w?type=png
+:::{image} https://mermaid.ink/img/pako:eNp9kl1vmzAUhv8Kcm82iUUQvoJ31Sbp7Satu9mYJhebgAo2sk2bLsp_37H5SEibokjxeXw-XtvvAeWCMoTRYy3yp4w7Ti7qruHKCUxgKd5J0bV_NWN4aeApZwiVKPQLkayPKNHErBin5g_KfmfoYbt1Pj2s7z5n6M9l41IofdnZ78PytWXyuVJC9rHQJZPQzpRMY12HyuqZSTX0hjLYFmrM-_Zj2BgUGQh7HdeyU5pRC2By0wrOuFbvSJTimsKiko0RAQ3HpUM4dZoql8Lc7SQqbztIWn__OVcDrY1QIqmtlUJoRxSO1XZ2ZRnPa6LUhhVOTR5ZDYPrGt_c289VWoon9uWlorrEXrv_OqSb2-_zR2DPOiMgYAbMCHvqD0aE7X4A-Ca13zRxMku_mmM7_R1uNJxjo2F8nV5FuLm9D2-vH3Q0w1g2cuPGSwYvcYmmt5tzo-Pkk15JkCTbu9V1Jb35TmUTn7z8ds_6-hwjF-1kRREGwlzUMNkQE6KD8UyGIL8Ba2FYUlaQrtYZyvgRylrCfwnRjJVwqbsS4YLUCqKuhftgm4rsJGkmKsGKTK4FzEd4uQpsE4QPaI-wH4eLcJWkfuQFqRcvIxe9IhzG3iIIvMRfpWnoh158dNE_O9VbRH5sfmEQR2mQxNHxP78DhfA?type=png
 :::
-A block diagram showing an example of a TEE implementation, showing the TCB, the untrusted host resources, and the hardware root of trust.
+A block diagram showing an example of a TEE implementation, showing the TEE, TCB, the untrusted host resources, and the hardware root of trust.
 % :::{mermaid}
 % block
 %   columns 3
@@ -102,7 +101,7 @@ A block diagram showing an example of a TEE implementation, showing the TCB, the
 %     software
 %     data
 %   end
-%   tee["TEE and TCB"]
+%   tee["TEE (TCB)"]
 %   block:group_host:2
 %     columns 1
 %     hypervisor
@@ -114,10 +113,9 @@ A block diagram showing an example of a TEE implementation, showing the TCB, the
 %     columns 1
 %     firmware["firmware and microcode"]
 %     cpu["CPU"]
-%     vendor["CPU vendor"]
 %   end
-%   rot["hardware root of trust"]
-%
+%   rot["hardware root of trust (TCB)"]
+% 
 % classDef label fill:#FFFFFF,stroke-width:0px;
 % class tee label
 % class host label
@@ -131,7 +129,6 @@ A block diagram showing an example of a TEE implementation, showing the TCB, the
 % class data trusted
 % class cpu trusted
 % class firmware trusted
-% class vendor trusted
 % classDef untrusted fill:#377EB8,stroke-width:0px;
 % class hostos untrusted
 % class hypervisor untrusted
