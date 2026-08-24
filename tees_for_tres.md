@@ -124,7 +124,7 @@ Other scenarios where TEEs provide valuable isolation to TREs more appropriate s
 
 #### 1.b. TRE infrastructure is not exclusive
 
-When the {term}`TRE infrastructure`is not used exclusively for trusted research, the risk of non-authorised administrators accessing sensitive data (whether accidentally or maliciously) is raised.
+When the {term}`TRE infrastructure` is not used exclusively for trusted research, the risk of non-authorised administrators accessing sensitive data (whether accidentally or maliciously) is raised.
 In this scenario, different rules and processes for the administration of sensitive and non-sensitive environments could lead to errors.
 An example of this would be an HPC system which provides a service for both sensitive and non-sensitive workloads.
 This model could be particularly effective on a private cloud, a {term}`TRE project` would be allocated a CVM while non-sensitive work is conducted with conventional VMs.
