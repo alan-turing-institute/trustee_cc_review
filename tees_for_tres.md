@@ -130,7 +130,7 @@ An example of this would be an HPC system which provides a service for both sens
 This model could be particularly effective on a private cloud, a {term}`TRE project` would be allocated a CVM while non-sensitive work is conducted with conventional VMs.
 
 (sec-recommendations-lowtrust)=
-### 2. Low trust devices
+### 2. When using low trust devices
 
 Another possible scenario is low-trust, end-user devices or "bring your own compute".
 As a TEE does not depend on trust in the host operating system or software, you can use a TEE to run trusted computation on an untrusted device.
