@@ -159,7 +159,7 @@ It would offer most benefit when dealing with data which would encourage high-mo
 For example, compromising the host OS, BIOS or a social engineering attack targeting the {term}`infrastructure operator`.
 
 :::{attention} Viability of attack
-LLM agents have been demonstrated finding and exploiting zero-day vulnerabilities in computer systems.
+LLM agents have been [demonstrated taking unsanctioned actions to achieve a goal](https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing) including [finding and exploiting zero-day vulnerabilities](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals).
 As models improve, particularly open-weight models which can be run locally without guard rails, so will their ability to launch successful attacks.
 And so, while the attacks TEEs mitigate are complex, the barrier to launch will lower.
 In there future the threshold of data sensitivity (or value) where TEEs become necessary may reduce.
