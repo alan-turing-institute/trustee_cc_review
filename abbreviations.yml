@@ -12,11 +12,13 @@ project:
     IETF: Internet Engineering Task Force
     IME: Intel Management Environment
     JWT: JSON Web Token
+    LTS: Long Term Support
     OCI: Open Container Initiative
     OS: Operating System
     PCIe: Peripheral Component Interconnect Express
     PROM: programmable read-only memory
     RFC: request for comments
+    RHEL: Red Hat Enterprise Linux
     RME: Realm Management Extensions
     SEV: Secure Encrypted Virtualisation
     SNP: Secure Nested Paging

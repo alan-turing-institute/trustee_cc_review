@@ -5,6 +5,8 @@ abstract: |
 authors:
   - name: Jim Madge
     orcid: 0000-0001-6044-164X
+  - name: Duncan Leggat
+    orcid: 0009-0007-2922-3610
 license: CC-BY-4.0
 keywords:
     - confidential computing
@@ -14,28 +16,34 @@ keywords:
     - trusted research
 ---
 
-## Summary
+## Availability Summary
+
+- ✅ full support
+- 🟠 partial support
+- ❌ no or minimal support
+- ❓ unknown
 
 :::{table} Support for TEEs across various cloud and HPC platforms available in the UK
 :label: tab-system
-| Category   | System                                                               | TEE Support   | Details                                                                   |
-| ---------- | -------------                                                        | ------------- | ------------------------------------------------------------------------- |
-| AIRR       | Dawn                                                                 | ❌            | Pre-TDX Intel CPU generation                                              |
-| AIRR       | Isambard AI                                                          | ❌            | The GH200 superchips' Grace CPU does not support RME                      |
-| Cloud      | AWS                                                                  | ✅            | [](#sec-availability-cloud-aws)                                           |
-| Cloud      | Azure                                                                | ✅            | [](#sec-availability-cloud-azure)                                         |
-| Cloud      | GCP                                                                  | ✅            | [](#sec-availability-cloud-gcp)                                           |
-| STFC       | Mary Coombs                                                          | 🟠            | Hardware details not confirmed but will include H100s                     |
-| Tier 1     | [ARCHER 2](https://www.archer2.ac.uk/about/hardware.html)            | 🟠            | CPUs with SEV (but not SNP) support                                       |
-| Tier 2     | [Baskerville](https://docs.baskerville.ac.uk/system/)                | 🟠            | Very small number of nodes with H100s and AMD CPUs with SEV-SNP support   |
-| Tier 2     | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | ❌            | Pre-TDX Intel CPU generation                                              |
-| Tier 2     | [Cirrus](https://www.cirrus.ac.uk/about/hardware-software/)          | ✅            | AMD CPUs with SEV-SNP support                                             |
-| Tier 2     | [Kelvin 2](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types) | ✅            | Nodes supporting SEV, small number of nodes supporting SEV-SNP            |
-| Tier 2     | [Sulis](https://sulis-hpc.github.io/techspecs/)                      | ✅            | Variety of nodes, including some with SEV and SEV-SNP support             |
-| Tier 2     | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | ❌            | CPUs with SEV (but not SNP) support, incompatible GPUs                    |
+| Category | System                                                               | TEE Compatible Hardware | TEE Offering | Details                                                                 |
+|----------|----------------------------------------------------------------------|-------------------------|--------------|-------------------------------------------------------------------------|
+| AIRR     | Dawn                                                                 | ❌                      | ❌           | Pre-TDX Intel CPU generation                                            |
+| AIRR     | Zenith                                                               | ❓                      | ❓           |                                                                         |
+| AIRR     | Isambard AI                                                          | ❌                      | ❌           | The GH200 superchips' Grace CPU does not support RME                    |
+| Cloud    | AWS                                                                  | ✅                      | ✅           | [](#sec-availability-cloud-aws)                                         |
+| Cloud    | Azure                                                                | ✅                      | ✅           | [](#sec-availability-cloud-azure)                                       |
+| Cloud    | GCP                                                                  | ✅                      | ✅           | [](#sec-availability-cloud-gcp)                                         |
+| STFC     | Mary Coombs                                                          | 🟠                      | ❓           | Hardware details not confirmed but will include H100s                   |
+| Tier 1   | [ARCHER 2](https://www.archer2.ac.uk/about/hardware.html)            | 🟠                      | ❌           | CPUs with SEV (but not SNP) support                                     |
+| Tier 2   | [Baskerville](https://docs.baskerville.ac.uk/system/)                | 🟠                      | ❌           | Very small number of nodes with H100s and AMD CPUs with SEV-SNP support |
+| Tier 2   | [CSD3](https://www.csd3.cam.ac.uk/high-performance-computing)        | ❌                      | ❌           | Pre-TDX Intel CPU generation                                            |
+| Tier 2   | [Cirrus](https://www.cirrus.ac.uk/about/hardware-software/)          | ✅                      | ❌           | AMD CPUs with SEV-SNP support                                           |
+| Tier 2   | [Kelvin 2](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types) | ✅                      | ❌           | Nodes supporting SEV, small number of nodes supporting SEV-SNP          |
+| Tier 2   | [Sulis](https://sulis-hpc.github.io/techspecs/)                      | ✅                      | ❌           | Variety of nodes, including some with SEV and SEV-SNP support           |
+| Tier 2   | [Young](https://www.rc.ucl.ac.uk/docs/Clusters/Young/#node-types)    | ❌                      | ❌           | CPUs with SEV (but not SNP) support, incompatible GPUs                  |
 :::
 
-## Cloud
+## Public Cloud
 
 (sec-availability-cloud-aws)=
 ### AWS
@@ -130,27 +138,79 @@ Confidential VMs can be used as nodes in GKS Kubernetes.
 <!-- - CPU nodes with 2 AMD EPYC 7702 (supports SEV) -->
 <!-- - 2 CPU nodes with 2 AMD EPYC 7773X (supports SEV-SNP) -->
 
-## Conclusion
+(sec-av-challenges)=
+## Challenges in Adoption in HPC
 
-TEEs are not new technology, with implementations going back around a decade.
-Despite that, it is still an active area of development and research.
-Only the latest few generations of Intel and AMD processors support confidential VMs.
-Furthermore in the case of Intel, a pivot from enclaves to secure guests fragments TEE support in their CPUs.
-As a result, hardware support for TEEs is not common in UK research computing infrastructure.
+The hardware of many modern HPC systems support confidential computing and TEEs.
+The proportion of compatible clusters will increase as older generations of hardware are decommissioned and replaced.
+However, even in cases where hardware would allow it, CC and secure virtualisation are not available to users.
+
+Enabling CC presents a number of challenges for the administrators of HPC systems,
+which prioritise stability[^stability], reliability[^reliability], uptime[^uptime], performance[^performance] and throughput[^throughput] to maximise their usage and output.
+
+[^stability]: A consistent state which does not change, for example maintaining ABI compatibility.
+  This is not the same as reliability.
+[^reliability]: A state of being bug and problem free.
+[^uptime]: Time that a system spend running and available for work.
+[^performance]: How quickly a computer can perform calculations, measured in FLOPS.
+[^throughput]: The overall rate of output of a computer across all tasks, in contrast to the peak calculation rate for a single task.
+  Throughput therefore depends on how efficient resources can be utilised across all jobs submitted and depends on the effective scheduling of tasks as well as raw performance.
+
+Activating the CPU and {term}`secure processor` features that enable CC is done through UEFI.
+In a HPC system these changes must be made on every node that must support confidential computing, potentially hundreds or thousands of nodes.
+More problematic that UEFI configuration is managing the OS and kernel versions across nodes.
+This is necessary as TEE implementations will require compatible kernels, and hence OS.
+
+Changing the kernel or OS version on a HPC system risks introducing bugs or breaking existing hardware.
+HPC systems tends to lean towards LTS[^LTS] kernels for stability, which may lack support for the CC features of new hardware.
+For example, at the time of writing, Rocky Linux 9 and RHEL 9 (popular choices for HPC) by contrast, operate on Linux kernel 5.14, which does not support CC.
+The latest release, RHEL 10 (updated to kernel 6.12) offers [support for CVMs](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/10.0_release_notes/technology-preview-features#technology-preview-features-virtualization) as a [technology preview](https://access.redhat.com/support/offerings/techpreview).
+Technology preview features are not fully supported and are intended for production use.
+So, with the latest RHEL release operators would take on risk in using a feature that is not fully supported and without guarantee.
+
+[^LTS]: Long Term Support kernels are maintained branches of the Linux kernel behind the latest version,
+  which incorporate bug fixes from more recent releases.
+
+Furthermore, HPC systems may rely on drivers for high performance hardware (parallel storage, fast networking, accelerators) which impose restrictions on kernel versions.
+It is therefore possible that administrators must choose between CC support or hardware features when deciding on a kernel version.
+In these cases the optimal functioning of hardware is likely to win out over a relatively niche feature.
+
+Both UEFI and kernel/OS configuration steps would require downtime to implement on an existing system.
+Kernel/OS changes in particular could result in extended downtime as it may additionally require rebuilding software, updating drivers, or rewriting scripts in reaction to CLI changes.
+
+The data protection afforded by TEEs comes with a negative impact on performance.
+Performance loss typically varies between [2% and 10%](https://www.servnetuk.com/learn/confidential-computing-explained#s-8) compared to conventional VMs.
+The performance difference depends strongly on the workflow, with memory-intensive work suffering higher losses than CPU-bound tasks [@xinyuan-benchmarking; @coppolino-experimental].
+The performance gap between confidential and conventional workloads will likely decrease as TEEs are further developred.
+However, the performance loss and increased memory latency will likely prevent it being used by default.
+For users the performance cost may be an acceptable to enabled trusted research on an HPC system.
+However, for HPC operators a significant number of confidential jobs would reduce the throughput of the cluster compared to only non-confidential processes.
+
+Additionally, many HPC systems do not support virtualisation at all.
+For most jobs, creating a virtualmachine would be unnecessary and only result in longer stand-up and run times.
+Even when it is, the scheduling of CVMs is also a challenge.
+A simple way to handle this would be to create persistent CVMs, which are handed over to users, who then manage [attestation](#sec-cc-attestation) and work interactively in the TEE.
+However, this will lead to the allocated resources spending much of their time idle and unavailable to other HPC users.
+Alternatively, CVMs could be created dynamically by the scheduler in response to demand, but that presents new challenges in building infrastructure to manage the secure release of confidential data, the workloads and secrets to the CVM.
+This is similar to the set of challenges the [Confidential Containers](https://confidentialcontainers.org/) project addresses for Kuberentes.
+
+## Conclusion
 
 As it stands, there is a little support for confidential computing in UK national-scale research computing.
 The first generation of AIRR supercomputers, Dawn and Isambard-AI, both lack hardware supporting TEEs.
-As the adoption of TEEs increases (and they become better integrated into tools for managing workloads, such as Kubernetes),
-this may leave a gap in the ability to conduct research using sensitive data, particularly for AI tasks.
-
 A number of Tier 2 systems have hardware compatible with secure virtualisation.
-Mostly this is AMD SEV/SEV-SNP, but there is also hardware supporting TDX.
-It is not clear if these systems have been configured to enable confidential VMs.
-It seems unlikely as most of these systems are designed to be used through a scheduler (like SLURM) and not for users to deploy VMs.
-Virtualisation may be disable altogether.
-However, these systems could be used as TEE testbeds, perhaps especially as they approach end of service.
+However, none offer CC to users.
+Significant [challenges](#sec-av-challenges) remain in how to support CC in the HPC context.
+As the adoption of TEEs increases, this may leave a gap in the ability to conduct research using sensitive data, particularly for AI tasks.
 
-Currently, cloud providers fill that gap, with the largest services offering a choice of TEE implementation and supporting GPU use.
+Currently, cloud providers fill that gap, with the largest services offering a choice of TEE implementations and hardware configurations (including GPUs).
 These resources may not be available to all research, for example when data governance imposes restrictions on the geography of data storage.
 It also presents a presents challenges for researchers in managing costs and avoiding dependence on large-scale, private compute providers.
 Better support from national resources could help enable research, promote the safe use of sensitive data in research and make research more financially efficient.
+
+If there is critical need for CC on the next generation of HPC machines, it must be influence the design of the system from conception.
+Beginning at procurement, hardware that supports CC must be chosen.
+CC support must also factor into kernel and OS choice, alongside constraints from other hardware and considerations of stability and software support.
+Beyond that, there is a significant unsolved problem of how to schedule and manage TEEs in a manner suitable for HPC.
+At present, with the lack of an open project similar to [Confidential Containers](https://confidentialcontainers.org/) for HPC,
+early adopters may find they have to implement this supporting infrastructure themselves.
