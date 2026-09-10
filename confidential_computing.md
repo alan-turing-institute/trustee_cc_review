@@ -149,9 +149,14 @@ Therefore, all software (including any OS) in the TEE must be trusted, and forms
 This is illustrated in [](#fig-tcb-and-rot).
 :::
 
-Advanced side-channel, physical-access attacks have been use to expose TEE secrets.
+Advanced side-channel and physical-access attacks have been used to expose TEE secrets.
 However, an attack able to read arbitrary memory in plain text has not been demonstrated.
 Proven attacks include [tee.fail](https://tee.fail/) and [wiretap.fail](https://wiretap.fail/).
+
+The practical relevance of these attacks depends on the threat model and deployment.
+The cited physical attacks require access to the host hardware, while many co-residency side channels require an attacker to execute code on the same physical host.
+Using dedicated hosts therefore reduces exposure to untrusted co-tenants, but does not remove the risk from a privileged host operator, compromised host software, or an attacker with physical access.
+If a TRE threat model excludes host-level or physical adversaries, these attacks may be treated as out of scope, but that assumption should be stated explicitly.
 
 (sec-cc-attestation)=
 ## Attestation
