@@ -150,8 +150,10 @@ This is illustrated in [](#fig-tcb-and-rot).
 :::
 
 Advanced side-channel, physical-access attacks have been use to expose TEE secrets.
-However, an attack able to read arbitrary memory in plain text has not been demonstrated.
-Proven attacks include [tee.fail](https://tee.fail/) and [wiretap.fail](https://wiretap.fail/).
+Proven attacks include [tee.fail](https://tee.fail/) [@chaung-teefail] and [wiretap.fail](https://wiretap.fail/) [@seto-wiretap].
+Another class of attacks, which modify communications between CPU and memory on the memory bus, have also been demonstrated [BadRAM](https://badram.eu/) [@demeulemeester-badram], [Battering RAM](https://batteringram.eu/) [@demeulemeester-batteringram].
+One attack of this kind, [DDRop](https://ddropattack.eu/) [@demeulemeester-ddrop] has been shown to be able to corrupt memory in an Intel TDX CVM,
+enabling a debug mode where CVM memory can be obtained in plaintext by the hypervisor.
 
 (sec-cc-attestation)=
 ## Attestation
