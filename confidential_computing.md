@@ -17,8 +17,8 @@ Confidential computing describes a set of technologies that protect data while i
 This is distinct from protecting data at rest, written to a storage device, or in transit, while being sent over a network.
 We could consider both of those as solved problems, with public/private key encryption, secure protocols and modern filesystems.
 Confidential computing is achieved by creating a hardware-based, attestable TEE.
-Attestation, proves that a TEE is correctly configured and has not been tampered with.
-Data in use, and code being executing in a TEE is encrypted and may not be read or modified by other processes on the same computer.
+Attestation proves that a TEE is correctly configured and has not been tampered with.
+Data in use, and code being executed in a TEE is encrypted and may not be read or modified by other processes on the same computer.
 
 (sec-cc-tees)=
 ## Trusted Execution Environments
