@@ -183,7 +183,7 @@ The claims will vary, depending on a TEEs configuration and hardware, and may in
 All claims are collected as an evidence object, such as JWT [@rfc7519] or EAT [@rfc9711].
 
 It is important that evidence is correct so a TEE can be accurately assessed.
-The evidence is collected by hardware-based routines[^firmware-microcode] in the {term}`secure processor` making it unfeasible for the host or hypervisor to tamper with the evidence
+The evidence is collected by hardware-based routines[^firmware-microcode] in the {term}`secure processor` making it unfeasible for the host or hypervisor to tamper with the evidence.
 The evidence object is signed by a private key belonging to the {term}`secure processor`.
 Unique, unpredictable, random private keys for each CPU are generated at the time of manufacture.
 They are written to the hardware in one-time PROM, and so are immutable.
