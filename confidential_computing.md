@@ -17,8 +17,8 @@ Confidential computing describes a set of technologies that protect data while i
 This is distinct from protecting data at rest, written to a storage device, or in transit, while being sent over a network.
 We could consider both of those as solved problems, with public/private key encryption, secure protocols and modern filesystems.
 Confidential computing is achieved by creating a hardware-based, attestable TEE.
-Attestation, proves that a TEE is correctly configured and has not been tampered with.
-Data in use, and code being executing in a TEE is encrypted and may not be read or modified by other processes on the same computer.
+Attestation proves that a TEE is correctly configured and has not been tampered with.
+Data in use, and code being executed in a TEE is encrypted and may not be read or modified by other processes on the same computer.
 
 (sec-cc-tees)=
 ## Trusted Execution Environments
@@ -183,7 +183,7 @@ The claims will vary, depending on a TEEs configuration and hardware, and may in
 All claims are collected as an evidence object, such as JWT [@rfc7519] or EAT [@rfc9711].
 
 It is important that evidence is correct so a TEE can be accurately assessed.
-The evidence is collected by collected by hardware-based routines[^firmware-microcode] in the {term}`secure processor` making it unfeasible for the host or hypervisor to tamper with the evidence
+The evidence is collected by hardware-based routines[^firmware-microcode] in the {term}`secure processor` making it unfeasible for the host or hypervisor to tamper with the evidence.
 The evidence object is signed by a private key belonging to the {term}`secure processor`.
 Unique, unpredictable, random private keys for each CPU are generated at the time of manufacture.
 They are written to the hardware in one-time PROM, and so are immutable.
