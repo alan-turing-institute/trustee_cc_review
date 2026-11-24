@@ -23,6 +23,7 @@ project:
     - file: support.md
     - file: availability.md
     - file: tees_for_tres.md
+    - file: fridge.md
     - file: glossary.md
     - file: RATS_roles.md
   bibliography:
