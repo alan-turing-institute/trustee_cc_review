@@ -18,11 +18,11 @@ keywords:
 
 ## Introduction
 
-[FRIDGE](https://alan-turing-institute.github.io/fridge/) is a project enabling the integration of external HPC with a TRE in a secure manner.
-It achieves this by deploying a minimal, satellite TRE, capable of orchestrating jobs sent from the "Home TRE".
-The satellite is contained within a secure enclave, called the [TRE Tenancy](https://alan-turing-institute.github.io/fridge/introduction/#key-concepts).
+[FRIDGE](xref:fridge) is a project enabling the integration of external HPC with a TRE in a secure manner.
+It achieves this by deploying a minimal, [satellite TRE](xref:fridge/introduction#key-concepts), capable of orchestrating jobs sent from the "Home TRE".
+The satellite is contained within a secure enclave, called the [TRE Tenancy](xref:fridge#arch-arch-tenancy).
 The TRE Tenancy is deployed and managed by the host, while the satellite TRE (and everything else inside the tenancy) are controlled by the TRE operator.
-This separation of responsibilities is called the [Shared Responsibility Model](https://alan-turing-institute.github.io/fridge/shared-responsibility/)
+This separation of responsibilities is called the [Shared Responsibility Model](xref:fridge#arch-shared-responsibility)
 These two aspects underlie the core principles of FRIDGE,
 
 - Establish a trusted environment on a third party system for trusted research
